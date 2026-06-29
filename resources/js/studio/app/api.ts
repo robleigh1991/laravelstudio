@@ -85,3 +85,33 @@ export function deleteFile(path: string): Promise<{ deleted: boolean }> {
     body: JSON.stringify({ path }),
   });
 }
+
+async function requestText(url: string, options: RequestInit = {}): Promise<string> {
+  const method = options.method ?? 'GET';
+  const isMutation = method !== 'GET';
+
+  const response = await fetch(url, {
+    ...options,
+    method,
+    credentials: 'same-origin',
+    headers: {
+      Accept: 'text/html',
+      ...(isMutation ? { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken() } : {}),
+      ...(options.headers ?? {}),
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Preview failed (${response.status})`);
+  }
+
+  return response.text();
+}
+
+/** Render a block tree to HTML via the preview endpoint. */
+export function renderPreview(blocks: unknown): Promise<string> {
+  return requestText('/studio/api/preview', {
+    method: 'POST',
+    body: JSON.stringify({ blocks }),
+  });
+}

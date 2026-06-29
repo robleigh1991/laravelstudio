@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useEditorStore, type Breakpoint } from './stores/editor';
 import StToolbar from '../ui/StToolbar.vue';
 import StSegmented from '../ui/StSegmented.vue';
 import StButton from '../ui/StButton.vue';
 import StTabs from '../ui/StTabs.vue';
 import Explorer from './Explorer.vue';
-import EditorPane from './EditorPane.vue';
+import CanvasPane from './CanvasPane.vue';
 
 const editor = useEditorStore();
 const panelTab = ref<'inspect' | 'ai'>('inspect');
@@ -21,17 +21,6 @@ const panelTabs = [
   { value: 'inspect', label: 'Inspect' },
   { value: 'ai', label: 'AI' },
 ];
-
-const breakpointWidth = computed(() => {
-  switch (editor.breakpoint) {
-    case 'md':
-      return 768;
-    case 'lg':
-      return 1024;
-    default:
-      return 390;
-  }
-});
 
 function onBreakpoint(value: string) {
   editor.setBreakpoint(value as Breakpoint);
@@ -112,10 +101,7 @@ function startResize(side: 'left' | 'right', event: PointerEvent) {
       ></div>
 
       <main class="shell__canvas" data-pane="preview">
-        <div class="shell__canvas-bar">Live preview · {{ breakpointWidth }} px</div>
-        <div class="shell__canvas-area shell__canvas-area--editor">
-          <EditorPane />
-        </div>
+        <CanvasPane />
       </main>
 
       <div

@@ -102,8 +102,10 @@ Update the status emoji (☐ → 🔄 → ✅) as phases move.
 
 - [ ] Build 10–15 Blade components as `<x-...>` with typed, documented props (hero, header, footer, features, pricing, FAQ, CTA, cards, testimonials, navigation)
 - [ ] Responsive-by-default behavior baked into every component (fluid type, stacking grids, mobile nav)
-- [ ] Block→preview renderer (server-rendered Blade)
-- [ ] Page model: ordered list of blocks, persisted as JSON during editing
+- [x] Block→preview renderer (server-rendered Blade): `PreviewRenderer` + `POST studio/api/preview` + Pest tests
+- [x] Live preview canvas: `PreviewCanvas` iframe (Tailwind browser build), `CanvasPane` Preview/Code toggle, breakpoint-driven width, wired into shell + tests
+- [x] Page-block parser (`editor/page.ts`) + tests; editor smoke updated for Preview/Code
+- [ ] Page model: ordered list of blocks, persisted as JSON during editing (in-editor block tree, not just file JSON)
 - [ ] Component registry: metadata describing each component's editable props
 - [ ] 🧪 Unit tests: registry logic, block schema validation, component prop contracts
 - [ ] 🧪 Render tests: each component renders correctly from JSON
