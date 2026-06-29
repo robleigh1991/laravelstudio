@@ -1,10 +1,11 @@
-/// <reference types="vitest/config" />
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import { bunny } from 'laravel-vite-plugin/fonts';
 import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 
+// Note: Vitest uses vitest.config.ts (not this file), so the Laravel dev-server
+// plugin below never loads during tests.
 export default defineConfig({
     plugins: [
         laravel({
@@ -23,10 +24,5 @@ export default defineConfig({
         watch: {
             ignored: ['**/storage/framework/views/**'],
         },
-    },
-    test: {
-        environment: 'jsdom',
-        include: ['resources/js/**/*.{test,spec}.{js,ts}'],
-        globals: true,
     },
 });
