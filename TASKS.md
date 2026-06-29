@@ -11,7 +11,7 @@ Living checklist for the build. Check items off as they land. Each phase carries
 | Phase | Title | Status | Tests green? |
 |---|---|---|---|
 | 0 | Foundations & spike | ✅ DONE — CI green on main | ✅ CI green (Backend + Frontend) |
-| 1 | Design system & admin UI | 🔄 Tokens + core kit + gallery done | ⏳ run locally |
+| 1 | Design system & admin UI | ✅ Kit + spec + a11y + visual reg | ⏳ verify locally + CI seeds baselines |
 | 2 | Editor shell & explorer | ☐ Not started | — |
 | 3 | Component library & block rendering | ☐ Not started | — |
 | 4 | Visual editing, inspector & responsive | ☐ Not started | — |
@@ -63,8 +63,9 @@ Update the status emoji (☐ → 🔄 → ✅) as phases move.
 - [x] Interaction & layout spec → `docs/admin-ui-spec.md` (layout, density, theming, keyboard/focus, ARIA, states, motion, voice)
 - [x] 🧪 axe accessibility checks across the kit (`a11y.test.ts`, WCAG A/AA via `axe-core`) — runs in the test job
 - [x] Fixed tree-role a11y: tree rows wrapped in `role="tree"` in the gallery
-- [ ] 🧪 Visual-regression baseline snapshots of the kit, light + dark (**Part B** — Playwright, own CI job)
-- [ ] ▶️ Verify locally: `npm install` (adds axe-core) · `npm run lint` · `npm run typecheck` · `npm test`
+- [x] 🧪 Visual-regression snapshots of the gallery, light + dark → Playwright (`e2e/gallery.spec.ts`, `playwright.config.ts`)
+- [x] Visual-regression CI job with Linux baseline self-seeding → `.github/workflows/visual.yml`
+- [ ] ▶️ Verify locally: `npm install` · `npm run lint` · `npm run typecheck` · `npm test` (Playwright baselines are seeded by CI)
 
 **Exit:** Approved editor mockup + kit gallery. Every later panel is built from this kit. Tests green.
 **Status:** First increment (tokens + 4 core components + gallery + tests) built. More kit components, the interaction/a11y spec, and visual-regression remain before Phase 1 closes.

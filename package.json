@@ -7,12 +7,14 @@
         "dev": "vite",
         "test": "vitest run",
         "test:watch": "vitest",
+        "test:visual": "playwright test",
         "lint": "eslint resources/js",
         "lint:fix": "eslint resources/js --fix",
         "typecheck": "vue-tsc --noEmit"
     },
     "devDependencies": {
         "@eslint/js": "^9.18.0",
+        "@playwright/test": "^1.61.0",
         "@tailwindcss/vite": "^4.0.0",
         "axe-core": "^4.12.0",
         "@vitejs/plugin-vue": "^6.0.0",
