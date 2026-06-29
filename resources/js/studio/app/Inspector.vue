@@ -4,6 +4,8 @@ import { usePageStore } from './stores/page';
 import { fieldsFor } from './editor/registry';
 import StTextInput from '../ui/StTextInput.vue';
 
+defineOptions({ name: 'BlockInspector' });
+
 const page = usePageStore();
 
 const selected = computed(() =>
