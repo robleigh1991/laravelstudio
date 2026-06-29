@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useFilesStore } from './stores/files';
 import { useEditorStore } from './stores/editor';
-import { parsePageBlocks } from './editor/page';
+import { usePageStore } from './stores/page';
 import PreviewCanvas from './PreviewCanvas.vue';
 import EditorPane from './EditorPane.vue';
 import StSegmented from '../ui/StSegmented.vue';
 
 const files = useFilesStore();
 const editor = useEditorStore();
+const page = usePageStore();
 const view = ref<'preview' | 'code'>('preview');
 
 const views = [
@@ -16,7 +17,8 @@ const views = [
   { value: 'code', label: 'Code' },
 ];
 
-const pageBlocks = computed(() => parsePageBlocks(files.openContents));
+// Keep the page model in sync with the open file.
+watch(() => files.openContents, (contents) => page.load(contents), { immediate: true });
 
 const breakpointWidth = computed(() => {
   switch (editor.breakpoint) {
@@ -42,8 +44,8 @@ function onView(value: string) {
     </div>
     <div class="canvas__body">
       <PreviewCanvas
-        v-if="view === 'preview' && pageBlocks !== null"
-        :blocks="pageBlocks ?? []"
+        v-if="view === 'preview' && page.isPage"
+        :blocks="page.blocks"
         :width="breakpointWidth"
       />
       <p v-else-if="view === 'preview'" class="canvas__hint">

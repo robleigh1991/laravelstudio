@@ -13,7 +13,8 @@ const loading = ref(false);
 const srcdoc = computed(
   () =>
     '<!doctype html><html><head><meta charset="utf-8">' +
-    '<script src="https://unpkg.com/@tailwindcss/browser@4"><\/script>' +
+    '<script src="https://unpkg.com/@tailwindcss/browser@4"></scr' +
+    'ipt>' +
     `</head><body>${body.value}</body></html>`,
 );
 

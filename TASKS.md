@@ -105,7 +105,8 @@ Update the status emoji (☐ → 🔄 → ✅) as phases move.
 - [x] Block→preview renderer (server-rendered Blade): `PreviewRenderer` + `POST studio/api/preview` + Pest tests
 - [x] Live preview canvas: `PreviewCanvas` iframe (Tailwind browser build), `CanvasPane` Preview/Code toggle, breakpoint-driven width, wired into shell + tests
 - [x] Page-block parser (`editor/page.ts`) + tests; editor smoke updated for Preview/Code
-- [ ] Page model: ordered list of blocks, persisted as JSON during editing (in-editor block tree, not just file JSON)
+- [x] Page model (Pinia `page` store): load page JSON → editable block tree, `serialize` (round-trips), `select`, `findBlock`, `updateProps`; preview now driven by `page.blocks`; tests
+- [ ] Save page: serialize the block tree back through the write API
 - [ ] Component registry: metadata describing each component's editable props
 - [ ] 🧪 Unit tests: registry logic, block schema validation, component prop contracts
 - [ ] 🧪 Render tests: each component renders correctly from JSON
