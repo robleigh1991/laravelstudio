@@ -4,17 +4,35 @@ import StButton from '../ui/StButton.vue';
 import StTextInput from '../ui/StTextInput.vue';
 import StSegmented from '../ui/StSegmented.vue';
 import StPanel from '../ui/StPanel.vue';
+import StSelect from '../ui/StSelect.vue';
+import StSlider from '../ui/StSlider.vue';
+import StTabs from '../ui/StTabs.vue';
+import StTooltip from '../ui/StTooltip.vue';
 
 defineOptions({ name: 'StudioGallery' });
 
 const theme = ref<'dark' | 'light'>('dark');
 const headline = ref('Build real Laravel sites, visually.');
 const breakpoint = ref('base');
+const weight = ref('bold');
+const fontSize = ref(30);
+const panelTab = ref('inspect');
 
 const breakpoints = [
   { value: 'base', label: 'Mobile' },
   { value: 'md', label: 'Tablet' },
   { value: 'lg', label: 'Desktop' },
+];
+
+const weights = [
+  { value: 'normal', label: 'Normal' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'bold', label: 'Bold' },
+];
+
+const panelTabs = [
+  { value: 'inspect', label: 'Inspect' },
+  { value: 'ai', label: 'AI' },
 ];
 
 function toggleTheme() {
@@ -59,6 +77,28 @@ function toggleTheme() {
           <template v-if="breakpoint === 'base'">writes base utilities</template>
           <template v-else>writes {{ breakpoint }}: overrides</template>
         </p>
+      </StPanel>
+
+      <StPanel title="Select">
+        <label class="label">Font weight</label>
+        <StSelect v-model="weight" :options="weights" aria-label="Font weight" />
+        <p class="hint">Value: {{ weight }}</p>
+      </StPanel>
+
+      <StPanel title="Slider">
+        <label class="label">Font size — {{ fontSize }}px</label>
+        <StSlider v-model="fontSize" :min="12" :max="72" aria-label="Font size" />
+      </StPanel>
+
+      <StPanel title="Tabs">
+        <StTabs v-model="panelTab" :tabs="panelTabs" aria-label="Inspector panel" />
+        <p class="hint">Active panel: {{ panelTab }}</p>
+      </StPanel>
+
+      <StPanel title="Tooltip">
+        <StTooltip label="Resets this property to inherit">
+          <StButton size="sm" variant="ghost">Hover or focus me</StButton>
+        </StTooltip>
       </StPanel>
 
       <StPanel title="Panel">
