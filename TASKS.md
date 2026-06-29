@@ -57,8 +57,8 @@ Update the status emoji (☐ → 🔄 → ✅) as phases move.
 - [x] Define design tokens: color, type scale, spacing, radius, elevation, motion → `resources/css/studio-tokens.css`
 - [x] Light + dark admin themes (dark-first; `[data-theme="light"]` override)
 - [x] High-fidelity mockup of the three-pane editor — **signed off** (dark pro-tool, indigo accent)
-- [~] Build Vue component kit (`resources/js/studio/ui/`): **done:** Button, TextInput, Segmented, Panel, Select, Slider, Tabs, Tooltip
-  - [ ] remaining: color picker, popover (Floating UI), modal, context menu, toolbar, tree row
+- [~] Build Vue component kit (`resources/js/studio/ui/`): **done:** Button, TextInput, Segmented, Panel, Select, Slider, Tabs, Tooltip, TreeRow, Toolbar, Modal, ColorPicker
+  - [ ] remaining: popover + context menu (need `@floating-ui/vue` — lockfile update step)
 - [x] Storybook-style gallery of the kit with light/dark toggle → `/studio/gallery` (`resources/js/studio/gallery/`)
 - [x] 🧪 Component unit tests for the built components (Button, TextInput, Segmented)
 - [ ] Interaction & layout spec: panel docking/resize, shortcuts, focus, empty/loading/error states, density

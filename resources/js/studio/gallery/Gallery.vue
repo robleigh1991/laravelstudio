@@ -8,6 +8,9 @@ import StSelect from '../ui/StSelect.vue';
 import StSlider from '../ui/StSlider.vue';
 import StTabs from '../ui/StTabs.vue';
 import StTooltip from '../ui/StTooltip.vue';
+import StTreeRow from '../ui/StTreeRow.vue';
+import StModal from '../ui/StModal.vue';
+import StColorPicker from '../ui/StColorPicker.vue';
 
 defineOptions({ name: 'StudioGallery' });
 
@@ -17,6 +20,9 @@ const breakpoint = ref('base');
 const weight = ref('bold');
 const fontSize = ref(30);
 const panelTab = ref('inspect');
+const bgColor = ref('#ffffff');
+const modalOpen = ref(false);
+const pagesExpanded = ref(true);
 
 const breakpoints = [
   { value: 'base', label: 'Mobile' },
@@ -99,6 +105,33 @@ function toggleTheme() {
         <StTooltip label="Resets this property to inherit">
           <StButton size="sm" variant="ghost">Hover or focus me</StButton>
         </StTooltip>
+      </StPanel>
+
+      <StPanel title="Color picker">
+        <label class="label">Background</label>
+        <StColorPicker v-model="bgColor" aria-label="Background" />
+      </StPanel>
+
+      <StPanel title="Tree rows — explorer / layers">
+        <StTreeRow
+          label="Pages"
+          :expandable="true"
+          :expanded="pagesExpanded"
+          @toggle="pagesExpanded = !pagesExpanded"
+        />
+        <template v-if="pagesExpanded">
+          <StTreeRow label="home" :depth="1" :active="true" />
+          <StTreeRow label="about" :depth="1" />
+          <StTreeRow label="pricing" :depth="1" />
+        </template>
+        <StTreeRow label="Components" :expandable="true" :expanded="false" />
+      </StPanel>
+
+      <StPanel title="Modal">
+        <StButton variant="secondary" @click="modalOpen = true">Open modal</StButton>
+        <StModal :open="modalOpen" title="Publish page" @close="modalOpen = false">
+          This compiles the page to Blade and commits it. Continue?
+        </StModal>
       </StPanel>
 
       <StPanel title="Panel">
