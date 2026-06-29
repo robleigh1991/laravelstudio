@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Studio\FileController;
+use App\Http\Controllers\Studio\PreviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,4 +22,7 @@ Route::prefix('studio/api')->name('studio.api.')->group(function () {
     Route::post('file/rename', [FileController::class, 'rename'])->name('file.rename');
     Route::post('file/duplicate', [FileController::class, 'duplicate'])->name('file.duplicate');
     Route::delete('file', [FileController::class, 'destroy'])->name('file.destroy');
+
+    // Phase 3: render a block tree to HTML for the live preview.
+    Route::post('preview', [PreviewController::class, 'render'])->name('preview');
 });

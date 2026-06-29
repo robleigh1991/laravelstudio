@@ -12,8 +12,8 @@ Living checklist for the build. Check items off as they land. Each phase carries
 |---|---|---|---|
 | 0 | Foundations & spike | ✅ DONE — CI green on main | ✅ CI green (Backend + Frontend) |
 | 1 | Design system & admin UI | ✅ DONE — CI green (incl. Visual) | ✅ all green |
-| 2 | Editor shell & explorer | 🔄 Filesystem API (read) built | ⏳ run locally |
-| 3 | Component library & block rendering | ☐ Not started | — |
+| 2 | Editor shell & explorer | ✅ Core done (shell, Explorer CRUD, Monaco, E2E) | ✅ all green |
+| 3 | Component library & block rendering | 🔄 Preview renderer (blocks→HTML) | ⏳ run locally |
 | 4 | Visual editing, inspector & responsive | ☐ Not started | — |
 | 5 | Drag & drop + theme system | ☐ Not started | — |
 | 6 | Publish: Blade compilation & Git | ☐ Not started | — |
