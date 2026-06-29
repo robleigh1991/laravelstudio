@@ -77,8 +77,10 @@ Update the status emoji (☐ → 🔄 → ✅) as phases move.
 - [x] ⚙️ Filesystem/project API (read): path-safe `ProjectFiles` (tree + read), `FileController`, `studio/api` routes
 - [x] 🧪 Feature tests: tree listing, nested dir, file read, **path-traversal blocked**, 404/422 cases (`FileApiTest`)
 - [x] Filesystem API (write): save/overwrite, rename, duplicate, delete (`PUT/POST/DELETE studio/api/file*`) + `FileWriteApiTest` (incl. traversal + validation)
-- [ ] Three-pane layout (Explorer · Preview · Inspector/AI), resizable, built from Phase 1 kit
-- [ ] Explorer: file tree over `resources/views`, routes, assets (read real filesystem) — wire to the API
+- [x] Three-pane layout (Explorer · Preview · Inspector/AI), resizable rails, built from the kit → `AppShell.vue` at `/studio`
+- [x] Editor state store (Pinia): theme, breakpoint, rail widths (persisted), collapse → `stores/editor.ts` + tests
+- [x] 🧪 Shell tests: three panes render, breakpoint switcher drives store + preview, theme toggle
+- [ ] Explorer: wire the tree to `studio/api` (real filesystem) with open/expand
 - [ ] Explorer actions: rename, duplicate, delete, search
 - [ ] ⚠️ Monaco integration: Blade, PHP, HTML, CSS, JS, TS, Vue, JSON, MD, YAML
 - [ ] Custom Blade grammar for Monaco (start from community grammars)
