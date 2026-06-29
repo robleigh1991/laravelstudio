@@ -1,0 +1,117 @@
+/*
+ * Laravel Studio — admin/editor design tokens.
+ *
+ * Dark-first (the editor's primary theme), with a light theme under
+ * [data-theme="light"]. These tokens describe the EDITOR CHROME only — they are
+ * separate from the Tailwind theme of the sites users build.
+ *
+ * Single source of truth for the Vue component kit. See docs/block-schema.md for
+ * the data model; this file is the visual system.
+ */
+
+:root,
+[data-theme='dark'] {
+    color-scheme: dark;
+
+    /* Surfaces (lightness increases with elevation) */
+    --st-bg: #0a0c10; /* canvas / preview backdrop */
+    --st-surface: #0f1218; /* panels: explorer, inspector */
+    --st-surface-2: #15181e; /* elevated: toolbar, titlebar, fields */
+    --st-surface-3: #1b1f27; /* popovers, menus */
+
+    /* Borders */
+    --st-border: #20242d;
+    --st-border-strong: #262b35;
+
+    /* Text */
+    --st-text: #e6e8ec;
+    --st-text-secondary: #9ba1ad;
+    --st-text-muted: #6b7280;
+    --st-text-disabled: #4b5160;
+
+    /* Accent (indigo) */
+    --st-accent: #6366f1;
+    --st-accent-hover: #5457e5;
+    --st-accent-active: #484bd6;
+    --st-accent-subtle: #1b2030; /* tinted fill behind accent text/icons */
+    --st-on-accent: #ffffff;
+    --st-accent-text: #a5a8f5; /* accent text on dark surfaces */
+
+    /* Semantic */
+    --st-success: #28c840;
+    --st-warning: #febc2e;
+    --st-danger: #ff5f57;
+    --st-danger-hover: #f04438;
+    --st-on-danger: #ffffff;
+
+    /* Focus ring */
+    --st-ring: 0 0 0 2px var(--st-bg), 0 0 0 4px var(--st-accent);
+}
+
+[data-theme='light'] {
+    color-scheme: light;
+
+    --st-bg: #f3f4f6;
+    --st-surface: #ffffff;
+    --st-surface-2: #f7f8fa;
+    --st-surface-3: #ffffff;
+
+    --st-border: #e5e7eb;
+    --st-border-strong: #d1d5db;
+
+    --st-text: #111827;
+    --st-text-secondary: #4b5563;
+    --st-text-muted: #9ca3af;
+    --st-text-disabled: #c4c8d0;
+
+    --st-accent: #6366f1;
+    --st-accent-hover: #5457e5;
+    --st-accent-active: #484bd6;
+    --st-accent-subtle: #eef0fe;
+    --st-on-accent: #ffffff;
+    --st-accent-text: #4f46e5;
+
+    --st-success: #16a34a;
+    --st-warning: #d97706;
+    --st-danger: #dc2626;
+    --st-danger-hover: #b91c1c;
+    --st-on-danger: #ffffff;
+
+    --st-ring: 0 0 0 2px var(--st-surface), 0 0 0 4px var(--st-accent);
+}
+
+:root {
+    /* Radius */
+    --st-radius-sm: 6px;
+    --st-radius: 8px;
+    --st-radius-lg: 12px;
+
+    /* Spacing scale (4px base) */
+    --st-space-1: 4px;
+    --st-space-2: 8px;
+    --st-space-3: 12px;
+    --st-space-4: 16px;
+    --st-space-5: 24px;
+    --st-space-6: 32px;
+
+    /* Typography */
+    --st-font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+    --st-font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', 'JetBrains Mono', monospace;
+    --st-text-xs: 11px;
+    --st-text-sm: 12px;
+    --st-text-base: 13px;
+    --st-text-md: 14px;
+    --st-text-lg: 16px;
+
+    /* Control heights (compact, pro-tool density) */
+    --st-control-sm: 26px;
+    --st-control: 32px;
+
+    /* Elevation */
+    --st-shadow-popover: 0 8px 24px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.3);
+
+    /* Motion */
+    --st-dur-fast: 120ms;
+    --st-dur-base: 180ms;
+    --st-ease: cubic-bezier(0.2, 0, 0, 1);
+}

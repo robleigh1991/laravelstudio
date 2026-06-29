@@ -10,8 +10,8 @@ Living checklist for the build. Check items off as they land. Each phase carries
 
 | Phase | Title | Status | Tests green? |
 |---|---|---|---|
-| 0 | Foundations & spike | ✅ Verified locally — push for CI | ✅ Pest 16/16 · Vitest 7/7 · Pint · PHPStan · ESLint · tsc |
-| 1 | Design system & admin UI | ☐ Not started | — |
+| 0 | Foundations & spike | ✅ DONE — CI green on main | ✅ CI green (Backend + Frontend) |
+| 1 | Design system & admin UI | 🔄 Tokens + core kit + gallery done | ⏳ run locally |
 | 2 | Editor shell & explorer | ☐ Not started | — |
 | 3 | Component library & block rendering | ☐ Not started | — |
 | 4 | Visual editing, inspector & responsive | ☐ Not started | — |
@@ -45,27 +45,30 @@ Update the status emoji (☐ → 🔄 → ✅) as phases move.
 - [x] Static analysis: Larastan (`phpstan.neon`), Pint (`pint.json`), ESLint flat config (`eslint.config.js`), Prettier, `tsconfig.json`
 - [x] CI workflow gating PRs on Pint + PHPStan + Pest + ESLint + typecheck + Vitest → `.github/workflows/ci.yml`
 - [x] Install deps + run suites locally: Pest **16/16**, Vitest **7/7**, Pint clean, PHPStan clean, ESLint 0, tsc clean
-- [ ] ▶️ Push to GitHub so the CI workflow runs and goes green (the real Phase-0 proof)
+- [x] ✅ Pushed to private GitHub repo (`laravel-studio`); CI workflow green on `main` (Backend + Frontend)
+- [x] CI hardening: `.env` + `APP_KEY` generation for backend; dedicated `vitest.config.ts` isolated from the Laravel Vite plugin
 
-**Exit:** A prop change in JSON produces a predictable, git-friendly Blade diff. ADR written. CI green.
-**Status:** ✅ All Phase 0 build work + local verification done (all checks green). ⏳ Only remaining: push so CI confirms green. **Do not start Phase 1 until CI is green.**
+**Exit:** A prop change in JSON produces a predictable, git-friendly Blade diff. ADR written. CI green. ✅ **MET — Phase 0 complete.**
 
 ---
 
 ## Phase 1 — Design system & admin UI foundation
 
-- [ ] Define design tokens: color, type scale, spacing, radius, elevation, motion
-- [ ] Light + dark admin themes
-- [ ] Build Vue component kit: buttons, inputs, selects, sliders, color pickers, tabs, popovers (Floating UI), tooltips, modals, context menus, panels, toolbars, tree rows
+- [x] Define design tokens: color, type scale, spacing, radius, elevation, motion → `resources/css/studio-tokens.css`
+- [x] Light + dark admin themes (dark-first; `[data-theme="light"]` override)
+- [x] High-fidelity mockup of the three-pane editor — **signed off** (dark pro-tool, indigo accent)
+- [~] Build Vue component kit (`resources/js/studio/ui/`): **done so far:** Button, TextInput, Segmented (breakpoint switcher), Panel
+  - [ ] remaining: select, slider, color picker, tabs, popover (Floating UI), tooltip, modal, context menu, toolbar, tree row
+- [x] Storybook-style gallery of the kit with light/dark toggle → `/studio/gallery` (`resources/js/studio/gallery/`)
+- [x] 🧪 Component unit tests for the built components (Button, TextInput, Segmented)
 - [ ] Interaction & layout spec: panel docking/resize, shortcuts, focus, empty/loading/error states, density
-- [ ] High-fidelity mockups of the three-pane editor + inspector sub-sections — signed off
-- [ ] Accessibility baseline in the kit: keyboard nav, focus mgmt, contrast, ARIA on custom controls
-- [ ] Storybook-style gallery of the kit (light + dark)
-- [ ] 🧪 Component unit tests (Vitest + Vue Test Utils) for every kit component
+- [ ] Accessibility baseline pass across the full kit: keyboard nav, focus mgmt, contrast, ARIA
 - [ ] 🧪 axe accessibility checks on the kit gallery in CI
 - [ ] 🧪 Visual-regression baseline snapshots of the kit (light + dark)
+- [ ] ▶️ Verify locally: `npm run lint` · `npm run typecheck` · `npm test`; view kit at `/studio/gallery`
 
 **Exit:** Approved editor mockup + kit gallery. Every later panel is built from this kit. Tests green.
+**Status:** First increment (tokens + 4 core components + gallery + tests) built. More kit components, the interaction/a11y spec, and visual-regression remain before Phase 1 closes.
 
 ---
 

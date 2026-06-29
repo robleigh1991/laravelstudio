@@ -15,6 +15,17 @@ export default [
         },
     },
     {
+        // Formatting/layout rules are owned by Prettier — turn them off in ESLint
+        // so the two tools don't conflict.
+        rules: {
+            'vue/max-attributes-per-line': 'off',
+            'vue/singleline-html-element-content-newline': 'off',
+            'vue/html-self-closing': 'off',
+            'vue/attributes-order': 'off',
+            'vue/first-attribute-linebreak': 'off',
+        },
+    },
+    {
         ignores: ['public/build/**', 'vendor/**', 'node_modules/**'],
     },
 ];
