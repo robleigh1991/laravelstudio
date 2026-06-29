@@ -30,22 +30,24 @@ final class BladeCompiler
      * Compile an ordered list of top-level blocks into a Blade page body.
      *
      * @param  list<Block>  $blocks
+     * @param  bool  $annotateIds  Tag each block with a data-studio-id attribute
+     *                             for the preview's click-to-select. Off for publish.
      */
-    public function compilePage(array $blocks): string
+    public function compilePage(array $blocks, bool $annotateIds = false): string
     {
         $compiled = array_map(
-            fn (Block $block): string => $this->compileBlock($block, 0),
+            fn (Block $block): string => $this->compileBlock($block, 0, $annotateIds),
             $blocks,
         );
 
         return implode("\n\n", $compiled)."\n";
     }
 
-    public function compileBlock(Block $block, int $indent = 0): string
+    public function compileBlock(Block $block, int $indent = 0, bool $annotateIds = false): string
     {
         $pad = str_repeat(self::INDENT, $indent);
         $tag = 'x-'.$block->type;
-        $attributes = $this->attributesFor($block);
+        $attributes = $this->attributesFor($block, $annotateIds);
         $hasChildren = $block->children !== [];
 
         if ($attributes === []) {
@@ -62,7 +64,7 @@ final class BladeCompiler
         }
 
         $inner = implode("\n\n", array_map(
-            fn (Block $child): string => $this->compileBlock($child, $indent + 1),
+            fn (Block $child): string => $this->compileBlock($child, $indent + 1, $annotateIds),
             $block->children,
         ));
 
@@ -74,7 +76,7 @@ final class BladeCompiler
      *
      * @return list<string>
      */
-    private function attributesFor(Block $block): array
+    private function attributesFor(Block $block, bool $annotateIds = false): array
     {
         $attributes = [];
 
@@ -93,6 +95,10 @@ final class BladeCompiler
         $classes = $this->classResolver->resolve($block->classes);
         if ($classes !== '') {
             $attributes[] = sprintf('class="%s"', $classes);
+        }
+
+        if ($annotateIds) {
+            $attributes[] = sprintf('data-studio-id="%s"', htmlspecialchars($block->id, ENT_QUOTES));
         }
 
         return $attributes;

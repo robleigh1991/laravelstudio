@@ -29,6 +29,17 @@ it('renders a block tree to HTML through the real components', function () {
         ->toContain('© 2026 Laravel Studio');               // footer
 });
 
+it('annotates rendered blocks with data-studio-id for selection', function () {
+    $response = $this->postJson('/studio/api/preview', [
+        'blocks' => [
+            ['id' => 'hero-1', 'type' => 'hero', 'props' => ['headline' => 'Hi']],
+        ],
+    ]);
+
+    $response->assertOk();
+    expect($response->getContent())->toContain('data-studio-id="hero-1"');
+});
+
 it('renders the hero headline inside an h1', function () {
     $response = $this->postJson('/studio/api/preview', [
         'blocks' => [

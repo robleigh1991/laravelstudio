@@ -78,3 +78,27 @@ it('escapes double quotes in string prop values', function () {
 
     expect((new BladeCompiler)->compileBlock($block))->toContain('headline="Say &quot;hi&quot;"');
 });
+
+it('annotates blocks with data-studio-id only when requested', function () {
+    $block = Block::fromArray(['id' => 'blk_1', 'type' => 'hero', 'props' => ['headline' => 'Hi']]);
+
+    $plain = (new BladeCompiler)->compileBlock($block);
+    $annotated = (new BladeCompiler)->compileBlock($block, annotateIds: true);
+
+    expect($plain)->not->toContain('data-studio-id')
+        ->and($annotated)->toContain('data-studio-id="blk_1"');
+});
+
+it('annotates nested children with their own ids', function () {
+    $block = Block::fromArray([
+        'id' => 'wrap',
+        'type' => 'container',
+        'children' => [['id' => 'child', 'type' => 'footer']],
+    ]);
+
+    $annotated = (new BladeCompiler)->compileBlock($block, annotateIds: true);
+
+    expect($annotated)
+        ->toContain('data-studio-id="wrap"')
+        ->toContain('data-studio-id="child"');
+});

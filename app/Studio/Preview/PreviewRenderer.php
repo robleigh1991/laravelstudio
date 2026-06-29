@@ -28,6 +28,8 @@ final class PreviewRenderer
             array_values($blocks),
         );
 
-        return Blade::render($this->compiler->compilePage($tree));
+        // annotateIds: tag each rendered block with data-studio-id so the
+        // preview iframe can map a click back to its block.
+        return Blade::render($this->compiler->compilePage($tree, annotateIds: true));
     }
 }

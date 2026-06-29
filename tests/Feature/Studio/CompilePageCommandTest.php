@@ -4,39 +4,57 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\File;
 
-afterEach(function () {
-    File::delete(resource_path('views/pages/home.blade.php'));
+$slug = '__cmdtest';
+
+beforeEach(function () use ($slug) {
+    $page = [
+        'title' => 'Command Test',
+        'slug' => $slug,
+        'blocks' => [
+            [
+                'id' => 'b1',
+                'type' => 'hero',
+                'props' => ['headline' => 'Fixture headline'],
+                'classes' => ['base' => ['bg-white', 'py-16'], 'md' => ['py-24']],
+            ],
+            ['id' => 'b2', 'type' => 'footer', 'props' => ['copyright' => 'Test']],
+        ],
+    ];
+
+    File::put(
+        resource_path("studio/pages/{$slug}.json"),
+        json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES),
+    );
 });
 
-it('compiles the sample home page into a Blade view', function () {
-    $this->artisan('studio:compile', ['slug' => 'home'])
-        ->assertSuccessful();
+afterEach(function () use ($slug) {
+    File::delete(resource_path("studio/pages/{$slug}.json"));
+    File::delete(resource_path("views/pages/{$slug}.blade.php"));
+});
 
-    $target = resource_path('views/pages/home.blade.php');
+it('compiles a page into a Blade view', function () use ($slug) {
+    $this->artisan('studio:compile', ['slug' => $slug])->assertSuccessful();
 
+    $target = resource_path("views/pages/{$slug}.blade.php");
     expect(File::exists($target))->toBeTrue();
 
-    $blade = File::get($target);
-
-    expect($blade)
+    expect(File::get($target))
         ->toContain('<x-hero')
-        ->toContain('headline="Build real Laravel sites, visually."')
-        ->toContain('class="bg-white py-16 md:py-24 lg:py-32"')
-        ->toContain('<x-features')
+        ->toContain('headline="Fixture headline"')
+        ->toContain('class="bg-white py-16 md:py-24"')
         ->toContain('<x-footer');
 });
 
-it('is idempotent — re-publishing yields byte-identical output', function () {
-    $this->artisan('studio:compile', ['slug' => 'home'])->assertSuccessful();
-    $first = File::get(resource_path('views/pages/home.blade.php'));
+it('is idempotent — re-publishing yields byte-identical output', function () use ($slug) {
+    $this->artisan('studio:compile', ['slug' => $slug])->assertSuccessful();
+    $first = File::get(resource_path("views/pages/{$slug}.blade.php"));
 
-    $this->artisan('studio:compile', ['slug' => 'home'])->assertSuccessful();
-    $second = File::get(resource_path('views/pages/home.blade.php'));
+    $this->artisan('studio:compile', ['slug' => $slug])->assertSuccessful();
+    $second = File::get(resource_path("views/pages/{$slug}.blade.php"));
 
     expect($second)->toBe($first);
 });
 
 it('fails gracefully for an unknown page', function () {
-    $this->artisan('studio:compile', ['slug' => 'does-not-exist'])
-        ->assertFailed();
+    $this->artisan('studio:compile', ['slug' => 'does-not-exist'])->assertFailed();
 });

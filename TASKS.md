@@ -13,8 +13,8 @@ Living checklist for the build. Check items off as they land. Each phase carries
 | 0 | Foundations & spike | ✅ DONE — CI green on main | ✅ CI green (Backend + Frontend) |
 | 1 | Design system & admin UI | ✅ DONE — CI green (incl. Visual) | ✅ all green |
 | 2 | Editor shell & explorer | ✅ Core done (shell, Explorer CRUD, Monaco, E2E) | ✅ all green |
-| 3 | Component library & block rendering | 🔄 Preview renderer (blocks→HTML) | ⏳ run locally |
-| 4 | Visual editing, inspector & responsive | ☐ Not started | — |
+| 3 | Component library & block rendering | ✅ Core: preview + page model + save | ✅ green (more components = breadth) |
+| 4 | Visual editing, inspector & responsive | 🔄 Click-to-select: id annotation | ⏳ run locally |
 | 5 | Drag & drop + theme system | ☐ Not started | — |
 | 6 | Publish: Blade compilation & Git | ☐ Not started | — |
 | 7 | AI assistant | ☐ Not started | — |
@@ -119,7 +119,10 @@ Update the status emoji (☐ → 🔄 → ✅) as phases move.
 
 ## Phase 4 — Visual editing, inspector & responsive control
 
-- [ ] Click-to-select on canvas → highlight → maps to block/element
+- [~] Click-to-select on canvas → highlight → maps to block/element
+  - [x] (A) Compiler `annotateIds` → preview emits `data-studio-id` per block; compiler + preview tests
+  - [ ] (B) Preview iframe click → postMessage → `page.select`; selection outline
+- [x] Decoupled `CompilePageCommandTest` from sample `home.json` (uses a fixture page) — robust to in-editor edits
 - [ ] Inspector sections: General, Layout, Spacing, Typography, Appearance, Responsive, Animations, A11y, SEO
 - [ ] ⚠️ Curated Tailwind token/class abstraction layer (the model behind every control)
 - [ ] ⚠️ Per-breakpoint switcher (Desktop/Tablet/Mobile): resizes canvas + scopes edits to breakpoint
