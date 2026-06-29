@@ -7,6 +7,7 @@ import StButton from '../ui/StButton.vue';
 import StTabs from '../ui/StTabs.vue';
 import Explorer from './Explorer.vue';
 import CanvasPane from './CanvasPane.vue';
+import Inspector from './Inspector.vue';
 
 const editor = useEditorStore();
 const panelTab = ref<'inspect' | 'ai'>('inspect');
@@ -125,9 +126,7 @@ function startResize(side: 'left' | 'right', event: PointerEvent) {
           @update:model-value="onPanel"
         />
         <div class="shell__inspector">
-          <p v-if="panelTab === 'inspect'" class="shell__empty">
-            Select an element to edit its properties.
-          </p>
+          <Inspector v-if="panelTab === 'inspect'" />
           <p v-else class="shell__empty">Ask AI to build or change a page.</p>
         </div>
       </aside>

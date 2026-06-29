@@ -33,6 +33,7 @@ defineEmits<{ 'update:modelValue': [value: string] }>();
 }
 
 .st-select__field {
+  box-sizing: border-box;
   width: 100%;
   height: var(--st-control);
   padding: 0 var(--st-space-5) 0 var(--st-space-3);

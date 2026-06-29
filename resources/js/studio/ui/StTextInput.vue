@@ -33,6 +33,7 @@ defineEmits<{ 'update:modelValue': [value: string] }>();
 
 <style scoped>
 .st-input {
+  box-sizing: border-box;
   width: 100%;
   height: var(--st-control);
   padding: 0 var(--st-space-3);

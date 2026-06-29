@@ -41,6 +41,7 @@ defineEmits<{ 'update:modelValue': [value: string] }>();
 }
 
 .st-color__hex {
+  box-sizing: border-box;
   flex: 1;
   height: var(--st-control);
   padding: 0 var(--st-space-3);

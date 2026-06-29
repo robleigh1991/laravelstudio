@@ -123,6 +123,8 @@ Update the status emoji (☐ → 🔄 → ✅) as phases move.
   - [x] (A) Compiler `annotateIds` → preview emits `data-studio-id` per block; compiler + preview tests
   - [x] (B) Preview iframe click → postMessage → `page.select`; selection outline driven by `selectedId`; message-handling tests
 - [x] Decoupled `CompilePageCommandTest` from sample `home.json` (uses a fixture page) — robust to in-editor edits
+- [~] Inspector: edits selected block's text props live (`Inspector.vue` + component field registry); wired into shell inspect pane; tests
+  - [ ] remaining sections: Layout, Spacing, Typography, Appearance, Responsive, Animations, A11y, SEO
 - [ ] Inspector sections: General, Layout, Spacing, Typography, Appearance, Responsive, Animations, A11y, SEO
 - [ ] ⚠️ Curated Tailwind token/class abstraction layer (the model behind every control)
 - [ ] ⚠️ Per-breakpoint switcher (Desktop/Tablet/Mobile): resizes canvas + scopes edits to breakpoint
