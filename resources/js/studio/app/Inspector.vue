@@ -3,7 +3,9 @@ import { computed } from 'vue';
 import { usePageStore } from './stores/page';
 import { useEditorStore } from './stores/editor';
 import { fieldsFor } from './editor/registry';
+import { EDIT_BREAKPOINTS, type Breakpoint } from '../types/block';
 import StTextInput from '../ui/StTextInput.vue';
+import StButton from '../ui/StButton.vue';
 
 defineOptions({ name: 'BlockInspector' });
 
@@ -11,6 +13,7 @@ const page = usePageStore();
 const editor = useEditorStore();
 
 const breakpointLabels: Record<string, string> = { base: 'Mobile', md: 'Tablet', lg: 'Desktop' };
+const editBreakpoints = EDIT_BREAKPOINTS;
 
 const selected = computed(() =>
   page.selectedId === null ? undefined : page.findBlock(page.selectedId),
@@ -44,6 +47,18 @@ function onClasses(value: string) {
     );
   }
 }
+
+function hasClasses(breakpoint: Breakpoint): boolean {
+  return (selected.value?.classes?.[breakpoint] ?? []).length > 0;
+}
+
+const canReset = computed(() => editor.breakpoint !== 'base' && hasClasses(editor.breakpoint));
+
+function resetClasses() {
+  if (selected.value) {
+    page.updateClasses(selected.value.id, editor.breakpoint, []);
+  }
+}
 </script>
 
 <template>
@@ -68,16 +83,33 @@ function onClasses(value: string) {
       </div>
 
       <div class="inspector__section inspector__section--bordered">
-        <span class="inspector__label">Classes — {{ breakpointLabels[editor.breakpoint] }}</span>
+        <div class="inspector__row">
+          <span class="inspector__label">Classes — {{ breakpointLabels[editor.breakpoint] }}</span>
+          <StButton v-if="canReset" size="sm" variant="ghost" @click="resetClasses">Reset</StButton>
+        </div>
         <StTextInput
           :model-value="classesValue"
           aria-label="Classes"
           placeholder="e.g. py-20 bg-gray-100"
           @update:model-value="onClasses"
         />
+        <div class="inspector__bps">
+          <span
+            v-for="bp in editBreakpoints"
+            :key="bp.key"
+            :data-bp="bp.key"
+            class="inspector__bp"
+            :class="{
+              'inspector__bp--set': hasClasses(bp.key),
+              'inspector__bp--active': bp.key === editor.breakpoint,
+            }"
+          >
+            {{ bp.label }}
+          </span>
+        </div>
         <p class="inspector__hint">
-          Applies to the {{ breakpointLabels[editor.breakpoint] }} breakpoint. Switch breakpoints in
-          the toolbar to target md:/lg: overrides.
+          Editing applies to the {{ breakpointLabels[editor.breakpoint] }} breakpoint. A dot means
+          that breakpoint has overrides.
         </p>
       </div>
     </template>
@@ -115,6 +147,42 @@ function onClasses(value: string) {
 
 .inspector__section--bordered {
   border-top: 1px solid var(--st-border);
+}
+
+.inspector__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--st-space-2);
+}
+
+.inspector__bps {
+  display: flex;
+  gap: var(--st-space-2);
+}
+
+.inspector__bp {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--st-space-1);
+  font-size: var(--st-text-xs);
+  color: var(--st-text-muted);
+}
+
+.inspector__bp::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--st-border-strong);
+}
+
+.inspector__bp--set::before {
+  background: var(--st-accent);
+}
+
+.inspector__bp--active {
+  color: var(--st-text);
 }
 
 .inspector__field {

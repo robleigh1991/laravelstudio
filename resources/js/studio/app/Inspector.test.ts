@@ -65,4 +65,32 @@ describe('Inspector', () => {
     // The base breakpoint is untouched.
     expect(page.findBlock('b1')?.classes?.base).toBeUndefined();
   });
+
+  it('marks breakpoints that have overrides', async () => {
+    const wrapper = mountInspector();
+    const page = usePageStore();
+    page.load(pageJson);
+    page.select('b1');
+    page.updateClasses('b1', 'md', ['py-20']);
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.get('[data-bp="md"]').classes()).toContain('inspector__bp--set');
+    expect(wrapper.get('[data-bp="base"]').classes()).not.toContain('inspector__bp--set');
+  });
+
+  it('resets the active breakpoint back to inherit', async () => {
+    const wrapper = mountInspector();
+    const page = usePageStore();
+    const editor = useEditorStore();
+    page.load(pageJson);
+    page.select('b1');
+    editor.setBreakpoint('md');
+    page.updateClasses('b1', 'md', ['py-20']);
+    await wrapper.vm.$nextTick();
+
+    const reset = wrapper.findAll('button').find((b) => b.text() === 'Reset');
+    await reset?.trigger('click');
+
+    expect(page.findBlock('b1')?.classes?.md).toBeUndefined();
+  });
 });

@@ -11,6 +11,17 @@ describe('fieldsFor', () => {
     ]);
   });
 
+  it('returns fields for the newer components', () => {
+    expect(fieldsFor('header').map((f) => f.key)).toEqual(['brand']);
+    expect(fieldsFor('cta').map((f) => f.key)).toEqual([
+      'heading',
+      'subheading',
+      'buttonLabel',
+      'buttonHref',
+    ]);
+    expect(fieldsFor('faq').map((f) => f.key)).toEqual(['heading']);
+  });
+
   it('returns an empty list for an unknown component', () => {
     expect(fieldsFor('mystery')).toEqual([]);
   });

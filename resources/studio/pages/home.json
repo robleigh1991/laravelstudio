@@ -12,9 +12,16 @@
                 "ctaHref": "/"
             },
             "classes": {
-                "base": ["bg-white", "py-16"],
-                "md": ["py-24"],
-                "lg": ["py-32"]
+                "base": [
+                    "bg-white",
+                    "py-16"
+                ],
+                "md": [
+                    "py-24"
+                ],
+                "lg": [
+                    "py-20"
+                ]
             }
         },
         {
@@ -23,11 +30,21 @@
             "props": {
                 "heading": "Why Laravel Studio",
                 "items": [
-                    { "title": "Visual editing", "body": "Click, edit, drag — no code required." },
-                    { "title": "Real code out", "body": "Standard Blade, Tailwind, and routes." },
-                    { "title": "No lock-in", "body": "Open the output in VS Code and keep going." }
+                    {
+                        "title": "Visual editing",
+                        "body": "Click, edit, drag — no code required."
+                    },
+                    {
+                        "title": "Real code out",
+                        "body": "Standard Blade, Tailwind, and routes."
+                    },
+                    {
+                        "title": "No lock-in",
+                        "body": "Open the output in VS Code and keep going."
+                    }
                 ]
-            }
+            },
+            "classes": {}
         },
         {
             "id": "b3",

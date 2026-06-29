@@ -17,6 +17,14 @@ export const componentFields: Record<string, PropField[]> = {
   ],
   features: [{ key: 'heading', label: 'Heading' }],
   footer: [{ key: 'copyright', label: 'Copyright' }],
+  header: [{ key: 'brand', label: 'Brand' }],
+  cta: [
+    { key: 'heading', label: 'Heading' },
+    { key: 'subheading', label: 'Subheading' },
+    { key: 'buttonLabel', label: 'Button label' },
+    { key: 'buttonHref', label: 'Button link' },
+  ],
+  faq: [{ key: 'heading', label: 'Heading' }],
 };
 
 export function fieldsFor(type: string): PropField[] {

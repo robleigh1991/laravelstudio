@@ -100,8 +100,8 @@ Update the status emoji (☐ → 🔄 → ✅) as phases move.
 
 ## Phase 3 — Component library & block rendering
 
-- [ ] Build 10–15 Blade components as `<x-...>` with typed, documented props (hero, header, footer, features, pricing, FAQ, CTA, cards, testimonials, navigation)
-- [ ] Responsive-by-default behavior baked into every component (fluid type, stacking grids, mobile nav)
+- [~] Build 10–15 Blade components: **done:** hero, features, footer, header (nav), cta, faq → `remaining:` pricing, cards, testimonials, gallery, etc.
+- [x] Responsive-by-default behavior baked into every component (fluid type, stacking grids, mobile nav)
 - [x] Block→preview renderer (server-rendered Blade): `PreviewRenderer` + `POST studio/api/preview` + Pest tests
 - [x] Live preview canvas: `PreviewCanvas` iframe (Tailwind browser build), `CanvasPane` Preview/Code toggle, breakpoint-driven width, wired into shell + tests
 - [x] Page-block parser (`editor/page.ts`) + tests; editor smoke updated for Preview/Code
@@ -130,7 +130,7 @@ Update the status emoji (☐ → 🔄 → ✅) as phases move.
 - [x] ⚠️ Per-breakpoint switcher: resizes canvas (Phase 3) **and** scopes class edits to the active breakpoint
 - [x] Mobile-first generation: inspector Classes field writes to `base`/`md`/`lg`; compiler emits `md:`/`lg:` via ClassResolver; `page.updateClasses` + tests
 - [x] Live preview updates on class edit (driven by `page.blocks`)
-- [ ] Inspector: show which props/classes are overridden per breakpoint + reset-to-inherit (polish)
+- [x] Inspector: breakpoint override dots (which breakpoints have class overrides) + Reset-to-inherit button; tests
 - [ ] Curated Tailwind token/class controls (sliders/pickers) instead of raw class text (future)
 - [ ] Layers panel (Figma tree): reorder, duplicate, hide, lock
 - [ ] 🧪 Unit tests: ⚠️ per-breakpoint override resolution (base + overrides → correct classes)
