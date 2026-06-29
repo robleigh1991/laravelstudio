@@ -11,6 +11,8 @@ import StTooltip from '../ui/StTooltip.vue';
 import StTreeRow from '../ui/StTreeRow.vue';
 import StModal from '../ui/StModal.vue';
 import StColorPicker from '../ui/StColorPicker.vue';
+import StPopover from '../ui/StPopover.vue';
+import StContextMenu from '../ui/StContextMenu.vue';
 
 defineOptions({ name: 'StudioGallery' });
 
@@ -23,6 +25,13 @@ const panelTab = ref('inspect');
 const bgColor = ref('#ffffff');
 const modalOpen = ref(false);
 const pagesExpanded = ref(true);
+const lastAction = ref('—');
+
+const rowActions = [
+  { label: 'Rename', value: 'rename' },
+  { label: 'Duplicate', value: 'duplicate' },
+  { label: 'Delete', value: 'delete' },
+];
 
 const breakpoints = [
   { value: 'base', label: 'Mobile' },
@@ -134,6 +143,22 @@ function toggleTheme() {
         </StModal>
       </StPanel>
 
+      <StPanel title="Popover">
+        <StPopover>
+          <template #trigger>
+            <StButton size="sm" variant="secondary">Open popover ▾</StButton>
+          </template>
+          <p class="hint" style="margin: 0">Floating UI keeps this positioned and flips on collision.</p>
+        </StPopover>
+      </StPanel>
+
+      <StPanel title="Context menu — right-click">
+        <StContextMenu :items="rowActions" @select="lastAction = $event">
+          <div class="ctx-target">Right-click anywhere in this box</div>
+        </StContextMenu>
+        <p class="hint">Last action: {{ lastAction }}</p>
+      </StPanel>
+
       <StPanel title="Panel">
         <p class="hint">Panels group inspector sections and explorer regions. This is a panel.</p>
       </StPanel>
@@ -202,5 +227,15 @@ function toggleTheme() {
   margin: var(--st-space-2) 0 0;
   font-size: var(--st-text-sm);
   color: var(--st-text-muted);
+}
+
+.ctx-target {
+  padding: var(--st-space-4);
+  text-align: center;
+  font-size: var(--st-text-sm);
+  color: var(--st-text-secondary);
+  background: var(--st-surface-2);
+  border: 1px dashed var(--st-border-strong);
+  border-radius: var(--st-radius);
 }
 </style>
