@@ -57,6 +57,8 @@ function onView(value: string) {
         v-if="view === 'preview' && page.isPage"
         :blocks="page.blocks"
         :width="breakpointWidth"
+        :selected-id="page.selectedId"
+        @select="page.select($event)"
       />
       <p v-else-if="view === 'preview'" class="canvas__hint">
         Open a page (a .json file under studio/pages) to preview it.

@@ -121,7 +121,7 @@ Update the status emoji (☐ → 🔄 → ✅) as phases move.
 
 - [~] Click-to-select on canvas → highlight → maps to block/element
   - [x] (A) Compiler `annotateIds` → preview emits `data-studio-id` per block; compiler + preview tests
-  - [ ] (B) Preview iframe click → postMessage → `page.select`; selection outline
+  - [x] (B) Preview iframe click → postMessage → `page.select`; selection outline driven by `selectedId`; message-handling tests
 - [x] Decoupled `CompilePageCommandTest` from sample `home.json` (uses a fixture page) — robust to in-editor edits
 - [ ] Inspector sections: General, Layout, Spacing, Typography, Appearance, Responsive, Animations, A11y, SEO
 - [ ] ⚠️ Curated Tailwind token/class abstraction layer (the model behind every control)
