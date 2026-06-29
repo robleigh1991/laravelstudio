@@ -11,8 +11,8 @@ Living checklist for the build. Check items off as they land. Each phase carries
 | Phase | Title | Status | Tests green? |
 |---|---|---|---|
 | 0 | Foundations & spike | ✅ DONE — CI green on main | ✅ CI green (Backend + Frontend) |
-| 1 | Design system & admin UI | ✅ Kit + spec + a11y + visual reg | ⏳ verify locally + CI seeds baselines |
-| 2 | Editor shell & explorer | ☐ Not started | — |
+| 1 | Design system & admin UI | ✅ DONE — CI green (incl. Visual) | ✅ all green |
+| 2 | Editor shell & explorer | 🔄 Filesystem API (read) built | ⏳ run locally |
 | 3 | Component library & block rendering | ☐ Not started | — |
 | 4 | Visual editing, inspector & responsive | ☐ Not started | — |
 | 5 | Drag & drop + theme system | ☐ Not started | — |
@@ -74,8 +74,11 @@ Update the status emoji (☐ → 🔄 → ✅) as phases move.
 
 ## Phase 2 — Editor shell & explorer
 
+- [x] ⚙️ Filesystem/project API (read): path-safe `ProjectFiles` (tree + read), `FileController`, `studio/api` routes
+- [x] 🧪 Feature tests: tree listing, nested dir, file read, **path-traversal blocked**, 404/422 cases (`FileApiTest`)
+- [ ] Filesystem API (write): save file, rename, duplicate, delete (+ tests)
 - [ ] Three-pane layout (Explorer · Preview · Inspector/AI), resizable, built from Phase 1 kit
-- [ ] Explorer: file tree over `resources/views`, routes, assets (read real filesystem)
+- [ ] Explorer: file tree over `resources/views`, routes, assets (read real filesystem) — wire to the API
 - [ ] Explorer actions: rename, duplicate, delete, search
 - [ ] ⚠️ Monaco integration: Blade, PHP, HTML, CSS, JS, TS, Vue, JSON, MD, YAML
 - [ ] Custom Blade grammar for Monaco (start from community grammars)
