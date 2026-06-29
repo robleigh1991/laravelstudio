@@ -5,14 +5,20 @@ vi.mock('../api', () => ({
   fetchTree: vi.fn(),
   fetchFile: vi.fn(),
   saveFile: vi.fn(),
+  renameFile: vi.fn(),
+  duplicateFile: vi.fn(),
+  deleteFile: vi.fn(),
 }));
 
-import { fetchTree, fetchFile, saveFile } from '../api';
+import { fetchTree, fetchFile, saveFile, renameFile, duplicateFile, deleteFile } from '../api';
 import { useFilesStore } from './files';
 
 const mockedTree = vi.mocked(fetchTree);
 const mockedFile = vi.mocked(fetchFile);
 const mockedSave = vi.mocked(saveFile);
+const mockedRename = vi.mocked(renameFile);
+const mockedDuplicate = vi.mocked(duplicateFile);
+const mockedDelete = vi.mocked(deleteFile);
 
 describe('files store', () => {
   beforeEach(() => {
@@ -96,5 +102,47 @@ describe('files store', () => {
     await files.saveOpenFile();
 
     expect(mockedSave).not.toHaveBeenCalled();
+  });
+
+  it('renames an entry and refreshes the parent directory', async () => {
+    mockedRename.mockResolvedValue({ renamed: true });
+    mockedTree.mockResolvedValue({ path: 'studio/pages', entries: [] });
+
+    const files = useFilesStore();
+    files.openPath = 'studio/pages/home.json';
+    await files.renameEntry('studio/pages/home.json', 'studio/pages/index.json');
+
+    expect(mockedRename).toHaveBeenCalledWith('studio/pages/home.json', 'studio/pages/index.json');
+    expect(mockedTree).toHaveBeenCalledWith('studio/pages');
+    // Open path follows the rename.
+    expect(files.openPath).toBe('studio/pages/index.json');
+  });
+
+  it('duplicates an entry and refreshes its directory', async () => {
+    mockedDuplicate.mockResolvedValue({ duplicated: true });
+    mockedTree.mockResolvedValue({ path: 'studio/pages', entries: [] });
+
+    const files = useFilesStore();
+    await files.duplicateEntry('studio/pages/home.json', 'studio/pages/home-copy.json');
+
+    expect(mockedDuplicate).toHaveBeenCalledWith(
+      'studio/pages/home.json',
+      'studio/pages/home-copy.json',
+    );
+    expect(mockedTree).toHaveBeenCalledWith('studio/pages');
+  });
+
+  it('deletes an entry and closes it if open', async () => {
+    mockedDelete.mockResolvedValue({ deleted: true });
+    mockedTree.mockResolvedValue({ path: 'studio/pages', entries: [] });
+
+    const files = useFilesStore();
+    files.openPath = 'studio/pages/home.json';
+    files.openContents = '{}';
+    await files.deleteEntry('studio/pages/home.json');
+
+    expect(mockedDelete).toHaveBeenCalledWith('studio/pages/home.json');
+    expect(files.openPath).toBeNull();
+    expect(files.openContents).toBeNull();
   });
 });

@@ -1,5 +1,18 @@
 import { defineStore } from 'pinia';
-import { fetchTree, fetchFile, saveFile, type FileEntry } from '../api';
+import {
+  fetchTree,
+  fetchFile,
+  saveFile,
+  renameFile,
+  duplicateFile,
+  deleteFile,
+  type FileEntry,
+} from '../api';
+
+function parentOf(path: string): string {
+  const index = path.lastIndexOf('/');
+  return index === -1 ? '' : path.slice(0, index);
+}
 
 /**
  * Explorer + open-file state, backed by the studio/api filesystem endpoints.
@@ -59,6 +72,57 @@ export const useFilesStore = defineStore('files', {
         this.dirty = false;
       } catch (e) {
         this.error = e instanceof Error ? e.message : 'Failed to save file.';
+      }
+    },
+
+    async refreshDir(dir: string) {
+      try {
+        const entries = (await fetchTree(dir)).entries;
+        if (dir === '') {
+          this.root = entries;
+        } else {
+          this.children[dir] = entries;
+        }
+      } catch (e) {
+        this.error = e instanceof Error ? e.message : 'Failed to refresh directory.';
+      }
+    },
+
+    async renameEntry(from: string, to: string) {
+      try {
+        await renameFile(from, to);
+        await this.refreshDir(parentOf(from));
+        if (parentOf(to) !== parentOf(from)) {
+          await this.refreshDir(parentOf(to));
+        }
+        if (this.openPath === from) {
+          this.openPath = to;
+        }
+      } catch (e) {
+        this.error = e instanceof Error ? e.message : 'Failed to rename.';
+      }
+    },
+
+    async duplicateEntry(from: string, to: string) {
+      try {
+        await duplicateFile(from, to);
+        await this.refreshDir(parentOf(to));
+      } catch (e) {
+        this.error = e instanceof Error ? e.message : 'Failed to duplicate.';
+      }
+    },
+
+    async deleteEntry(path: string) {
+      try {
+        await deleteFile(path);
+        await this.refreshDir(parentOf(path));
+        if (this.openPath === path) {
+          this.openPath = null;
+          this.openContents = null;
+          this.dirty = false;
+        }
+      } catch (e) {
+        this.error = e instanceof Error ? e.message : 'Failed to delete.';
       }
     },
 

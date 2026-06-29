@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { fetchTree, saveFile } from './api';
+import { fetchTree, saveFile, renameFile } from './api';
 
 type FetchMock = ReturnType<typeof vi.fn>;
 
@@ -51,5 +51,21 @@ describe('api client', () => {
     const headers = options.headers as Record<string, string>;
     expect(options.method).toBe('PUT');
     expect(headers).toHaveProperty('X-CSRF-TOKEN');
+  });
+
+  it('renameFile POSTs from/to to the rename endpoint', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({ renamed: true }),
+    });
+    stubFetch(fetchMock);
+
+    await renameFile('a.json', 'b.json');
+
+    const [url, options] = fetchMock.mock.calls[0] as [string, RequestInit];
+    expect(url).toBe('/studio/api/file/rename');
+    expect(options.method).toBe('POST');
+    expect(options.body).toBe(JSON.stringify({ from: 'a.json', to: 'b.json' }));
   });
 });

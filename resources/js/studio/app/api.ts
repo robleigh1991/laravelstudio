@@ -64,3 +64,24 @@ export function saveFile(path: string, contents: string): Promise<{ saved: boole
     body: JSON.stringify({ path, contents }),
   });
 }
+
+export function renameFile(from: string, to: string): Promise<{ renamed: boolean }> {
+  return request('/studio/api/file/rename', {
+    method: 'POST',
+    body: JSON.stringify({ from, to }),
+  });
+}
+
+export function duplicateFile(from: string, to: string): Promise<{ duplicated: boolean }> {
+  return request('/studio/api/file/duplicate', {
+    method: 'POST',
+    body: JSON.stringify({ from, to }),
+  });
+}
+
+export function deleteFile(path: string): Promise<{ deleted: boolean }> {
+  return request('/studio/api/file', {
+    method: 'DELETE',
+    body: JSON.stringify({ path }),
+  });
+}
