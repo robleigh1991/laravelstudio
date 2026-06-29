@@ -80,7 +80,9 @@ Update the status emoji (☐ → 🔄 → ✅) as phases move.
 - [x] Three-pane layout (Explorer · Preview · Inspector/AI), resizable rails, built from the kit → `AppShell.vue` at `/studio`
 - [x] Editor state store (Pinia): theme, breakpoint, rail widths (persisted), collapse → `stores/editor.ts` + tests
 - [x] 🧪 Shell tests: three panes render, breakpoint switcher drives store + preview, theme toggle
-- [ ] Explorer: wire the tree to `studio/api` (real filesystem) with open/expand
+- [x] Explorer wired to `studio/api`: typed API client (CSRF), `files` store (lazy tree + open file), recursive `Explorer`/`ExplorerNode`, mounted in the shell
+- [x] 🧪 Tests: API client (mocked fetch + CSRF), files store (lazy load/open/error), Explorer (render/expand/open)
+- [ ] Explorer actions: rename, duplicate, delete, search (context menu → write API)
 - [ ] Explorer actions: rename, duplicate, delete, search
 - [ ] ⚠️ Monaco integration: Blade, PHP, HTML, CSS, JS, TS, Vue, JSON, MD, YAML
 - [ ] Custom Blade grammar for Monaco (start from community grammars)

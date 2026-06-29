@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import AppShell from './AppShell.vue';
@@ -13,6 +13,15 @@ function mountShell() {
 describe('AppShell', () => {
   beforeEach(() => {
     localStorage.clear();
+    // The Explorer loads the tree on mount; stub fetch so it resolves cleanly.
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({ ok: true, status: 200, json: async () => ({ entries: [] }) }),
+    );
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
   });
 
   it('renders the three panes', () => {

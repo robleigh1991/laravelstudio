@@ -5,7 +5,7 @@ import StToolbar from '../ui/StToolbar.vue';
 import StSegmented from '../ui/StSegmented.vue';
 import StButton from '../ui/StButton.vue';
 import StTabs from '../ui/StTabs.vue';
-import StTreeRow from '../ui/StTreeRow.vue';
+import Explorer from './Explorer.vue';
 
 const editor = useEditorStore();
 const panelTab = ref<'inspect' | 'ai'>('inspect');
@@ -99,13 +99,7 @@ function startResize(side: 'left' | 'right', event: PointerEvent) {
         data-pane="explorer"
         :style="{ width: editor.leftWidth + 'px' }"
       >
-        <div class="shell__section">Explorer</div>
-        <div role="tree" aria-label="Pages">
-          <StTreeRow label="Pages" :expandable="true" :expanded="true" />
-          <StTreeRow label="home" :depth="1" :active="true" />
-          <StTreeRow label="about" :depth="1" />
-          <StTreeRow label="Components" :expandable="true" :expanded="false" />
-        </div>
+        <Explorer />
       </aside>
 
       <div
