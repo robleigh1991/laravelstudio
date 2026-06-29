@@ -82,11 +82,11 @@ Update the status emoji (☐ → 🔄 → ✅) as phases move.
 - [x] 🧪 Shell tests: three panes render, breakpoint switcher drives store + preview, theme toggle
 - [x] Explorer wired to `studio/api`: typed API client (CSRF), `files` store (lazy tree + open file), recursive `Explorer`/`ExplorerNode`, mounted in the shell
 - [x] 🧪 Tests: API client (mocked fetch + CSRF), files store (lazy load/open/error), Explorer (render/expand/open)
+- [x] ⚠️ Monaco integration: `MonacoEditor.vue` (lazy-loaded), Vite worker setup, `EditorPane` wired to the open file with Save → write API
+- [x] Language detection (php/blade/css/js/ts/json/md/yaml/html) → `editor/language.ts` + tests; dirty/save flow in `files` store + tests
+- [x] Monaco features (built-in): highlight, folding, minimap, find/replace, command palette, multi-cursor
+- [ ] Custom Blade grammar for Monaco (currently Blade → html; start from community grammars)
 - [ ] Explorer actions: rename, duplicate, delete, search (context menu → write API)
-- [ ] Explorer actions: rename, duplicate, delete, search
-- [ ] ⚠️ Monaco integration: Blade, PHP, HTML, CSS, JS, TS, Vue, JSON, MD, YAML
-- [ ] Custom Blade grammar for Monaco (start from community grammars)
-- [ ] Monaco features: highlight, folding, find/replace, command palette
 - [ ] Project model: create/open/list projects (each = real Laravel dir on disk)
 - [ ] 🧪 Feature tests: project create/open, file read/write to disk
 - [ ] 🧪 Component tests: explorer tree, Monaco panel wiring

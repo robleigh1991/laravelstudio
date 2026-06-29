@@ -6,6 +6,7 @@ import StSegmented from '../ui/StSegmented.vue';
 import StButton from '../ui/StButton.vue';
 import StTabs from '../ui/StTabs.vue';
 import Explorer from './Explorer.vue';
+import EditorPane from './EditorPane.vue';
 
 const editor = useEditorStore();
 const panelTab = ref<'inspect' | 'ai'>('inspect');
@@ -112,10 +113,8 @@ function startResize(side: 'left' | 'right', event: PointerEvent) {
 
       <main class="shell__canvas" data-pane="preview">
         <div class="shell__canvas-bar">Live preview · {{ breakpointWidth }} px</div>
-        <div class="shell__canvas-area">
-          <div class="shell__device" :style="{ width: breakpointWidth + 'px' }">
-            <p class="shell__empty">Select a page to preview</p>
-          </div>
+        <div class="shell__canvas-area shell__canvas-area--editor">
+          <EditorPane />
         </div>
       </main>
 
@@ -255,6 +254,12 @@ function startResize(side: 'left' | 'right', event: PointerEvent) {
   justify-content: center;
   padding: var(--st-space-5);
   overflow: auto;
+}
+
+.shell__canvas-area--editor {
+  padding: 0;
+  display: block;
+  overflow: hidden;
 }
 
 .shell__device {

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { fetchTree, fetchFile, type FileEntry } from '../api';
+import { fetchTree, fetchFile, saveFile, type FileEntry } from '../api';
 
 /**
  * Explorer + open-file state, backed by the studio/api filesystem endpoints.
@@ -12,6 +12,7 @@ export const useFilesStore = defineStore('files', {
     expanded: {} as Record<string, boolean>,
     openPath: null as string | null,
     openContents: null as string | null,
+    dirty: false,
     error: null as string | null,
   }),
   actions: {
@@ -38,8 +39,26 @@ export const useFilesStore = defineStore('files', {
       this.openPath = path;
       try {
         this.openContents = (await fetchFile(path)).contents;
+        this.dirty = false;
       } catch (e) {
         this.error = e instanceof Error ? e.message : 'Failed to open file.';
+      }
+    },
+
+    setOpenContents(value: string) {
+      this.openContents = value;
+      this.dirty = true;
+    },
+
+    async saveOpenFile() {
+      if (this.openPath === null || this.openContents === null) {
+        return;
+      }
+      try {
+        await saveFile(this.openPath, this.openContents);
+        this.dirty = false;
+      } catch (e) {
+        this.error = e instanceof Error ? e.message : 'Failed to save file.';
       }
     },
 

@@ -4,13 +4,15 @@ import { setActivePinia, createPinia } from 'pinia';
 vi.mock('../api', () => ({
   fetchTree: vi.fn(),
   fetchFile: vi.fn(),
+  saveFile: vi.fn(),
 }));
 
-import { fetchTree, fetchFile } from '../api';
+import { fetchTree, fetchFile, saveFile } from '../api';
 import { useFilesStore } from './files';
 
 const mockedTree = vi.mocked(fetchTree);
 const mockedFile = vi.mocked(fetchFile);
+const mockedSave = vi.mocked(saveFile);
 
 describe('files store', () => {
   beforeEach(() => {
@@ -66,5 +68,33 @@ describe('files store', () => {
     await files.loadRoot();
 
     expect(files.error).toBe('boom');
+  });
+
+  it('marks the buffer dirty when contents change', () => {
+    const files = useFilesStore();
+    files.setOpenContents('new contents');
+
+    expect(files.openContents).toBe('new contents');
+    expect(files.dirty).toBe(true);
+  });
+
+  it('saves the open file and clears the dirty flag', async () => {
+    mockedSave.mockResolvedValue({ saved: true });
+
+    const files = useFilesStore();
+    files.openPath = 'studio/pages/home.json';
+    files.setOpenContents('{"slug":"home"}');
+
+    await files.saveOpenFile();
+
+    expect(mockedSave).toHaveBeenCalledWith('studio/pages/home.json', '{"slug":"home"}');
+    expect(files.dirty).toBe(false);
+  });
+
+  it('does not call the API when there is no open file', async () => {
+    const files = useFilesStore();
+    await files.saveOpenFile();
+
+    expect(mockedSave).not.toHaveBeenCalled();
   });
 });
