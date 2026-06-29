@@ -14,6 +14,18 @@ function parentOf(path: string): string {
   return index === -1 ? '' : path.slice(0, index);
 }
 
+function joinName(dir: string, name: string): string {
+  return dir === '' ? name : `${dir}/${name}`;
+}
+
+function copyName(path: string): string {
+  const dir = parentOf(path);
+  const base = dir === '' ? path : path.slice(dir.length + 1);
+  const dot = base.lastIndexOf('.');
+  const renamed = dot === -1 ? `${base}-copy` : `${base.slice(0, dot)}-copy${base.slice(dot)}`;
+  return joinName(dir, renamed);
+}
+
 /**
  * Explorer + open-file state, backed by the studio/api filesystem endpoints.
  * Directory children are lazy-loaded and cached on first expand.
@@ -27,6 +39,8 @@ export const useFilesStore = defineStore('files', {
     openContents: null as string | null,
     dirty: false,
     error: null as string | null,
+    renameTarget: null as FileEntry | null,
+    deleteTarget: null as FileEntry | null,
   }),
   actions: {
     async loadRoot() {
@@ -124,6 +138,41 @@ export const useFilesStore = defineStore('files', {
       } catch (e) {
         this.error = e instanceof Error ? e.message : 'Failed to delete.';
       }
+    },
+
+    requestRename(entry: FileEntry) {
+      this.renameTarget = entry;
+    },
+
+    requestDelete(entry: FileEntry) {
+      this.deleteTarget = entry;
+    },
+
+    cancelAction() {
+      this.renameTarget = null;
+      this.deleteTarget = null;
+    },
+
+    async confirmRename(newName: string) {
+      const target = this.renameTarget;
+      if (target === null || newName.trim() === '') {
+        return;
+      }
+      await this.renameEntry(target.path, joinName(parentOf(target.path), newName.trim()));
+      this.renameTarget = null;
+    },
+
+    async confirmDelete() {
+      const target = this.deleteTarget;
+      if (target === null) {
+        return;
+      }
+      await this.deleteEntry(target.path);
+      this.deleteTarget = null;
+    },
+
+    async duplicate(entry: FileEntry) {
+      await this.duplicateEntry(entry.path, copyName(entry.path));
     },
 
     isExpanded(path: string): boolean {

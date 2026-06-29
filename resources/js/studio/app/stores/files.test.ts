@@ -145,4 +145,28 @@ describe('files store', () => {
     expect(files.openPath).toBeNull();
     expect(files.openContents).toBeNull();
   });
+
+  it('confirmRename joins the new name to the parent and clears the target', async () => {
+    mockedRename.mockResolvedValue({ renamed: true });
+    mockedTree.mockResolvedValue({ path: 'studio/pages', entries: [] });
+
+    const files = useFilesStore();
+    files.requestRename({ name: 'home.json', type: 'file', path: 'studio/pages/home.json' });
+    await files.confirmRename('index.json');
+
+    expect(mockedRename).toHaveBeenCalledWith('studio/pages/home.json', 'studio/pages/index.json');
+    expect(files.renameTarget).toBeNull();
+  });
+
+  it('confirmDelete deletes the pending target', async () => {
+    mockedDelete.mockResolvedValue({ deleted: true });
+    mockedTree.mockResolvedValue({ path: 'studio/pages', entries: [] });
+
+    const files = useFilesStore();
+    files.requestDelete({ name: 'home.json', type: 'file', path: 'studio/pages/home.json' });
+    await files.confirmDelete();
+
+    expect(mockedDelete).toHaveBeenCalledWith('studio/pages/home.json');
+    expect(files.deleteTarget).toBeNull();
+  });
 });

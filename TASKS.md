@@ -86,7 +86,8 @@ Update the status emoji (☐ → 🔄 → ✅) as phases move.
 - [x] Language detection (php/blade/css/js/ts/json/md/yaml/html) → `editor/language.ts` + tests; dirty/save flow in `files` store + tests
 - [x] Monaco features (built-in): highlight, folding, minimap, find/replace, command palette, multi-cursor
 - [ ] Custom Blade grammar for Monaco (currently Blade → html; start from community grammars)
-- [ ] Explorer actions: rename, duplicate, delete, search (context menu → write API)
+- [x] Explorer actions: right-click context menu → rename (modal), duplicate (auto -copy), delete (confirm modal), wired to write API with live tree refresh + tests
+- [ ] Explorer: search/filter
 - [ ] Project model: create/open/list projects (each = real Laravel dir on disk)
 - [ ] 🧪 Feature tests: project create/open, file read/write to disk
 - [ ] 🧪 Component tests: explorer tree, Monaco panel wiring
