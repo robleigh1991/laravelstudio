@@ -1,17 +1,25 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { usePageStore } from './stores/page';
+import { useEditorStore } from './stores/editor';
 import { fieldsFor } from './editor/registry';
 import StTextInput from '../ui/StTextInput.vue';
 
 defineOptions({ name: 'BlockInspector' });
 
 const page = usePageStore();
+const editor = useEditorStore();
+
+const breakpointLabels: Record<string, string> = { base: 'Mobile', md: 'Tablet', lg: 'Desktop' };
 
 const selected = computed(() =>
   page.selectedId === null ? undefined : page.findBlock(page.selectedId),
 );
 const fields = computed(() => (selected.value ? fieldsFor(selected.value.type) : []));
+
+const classesValue = computed(() =>
+  (selected.value?.classes?.[editor.breakpoint] ?? []).join(' '),
+);
 
 function valueOf(key: string): string {
   const value = selected.value?.props?.[key];
@@ -24,6 +32,16 @@ function valueOf(key: string): string {
 function onInput(key: string, value: string) {
   if (selected.value) {
     page.updateProps(selected.value.id, { [key]: value });
+  }
+}
+
+function onClasses(value: string) {
+  if (selected.value) {
+    page.updateClasses(
+      selected.value.id,
+      editor.breakpoint,
+      value.split(/\s+/).filter((cls) => cls !== ''),
+    );
   }
 }
 </script>
@@ -46,6 +64,20 @@ function onInput(key: string, value: string) {
         </label>
         <p v-if="fields.length === 0" class="inspector__hint">
           No editable text fields for this block yet.
+        </p>
+      </div>
+
+      <div class="inspector__section inspector__section--bordered">
+        <span class="inspector__label">Classes — {{ breakpointLabels[editor.breakpoint] }}</span>
+        <StTextInput
+          :model-value="classesValue"
+          aria-label="Classes"
+          placeholder="e.g. py-20 bg-gray-100"
+          @update:model-value="onClasses"
+        />
+        <p class="inspector__hint">
+          Applies to the {{ breakpointLabels[editor.breakpoint] }} breakpoint. Switch breakpoints in
+          the toolbar to target md:/lg: overrides.
         </p>
       </div>
     </template>
@@ -79,6 +111,10 @@ function onInput(key: string, value: string) {
   display: flex;
   flex-direction: column;
   gap: var(--st-space-3);
+}
+
+.inspector__section--bordered {
+  border-top: 1px solid var(--st-border);
 }
 
 .inspector__field {

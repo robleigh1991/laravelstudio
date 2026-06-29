@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { Block } from '../../types/block';
+import type { Block, Breakpoint } from '../../types/block';
 import { parsePage } from '../editor/page';
 import { saveFile } from '../api';
 
@@ -89,6 +89,21 @@ export const usePageStore = defineStore('page', {
         block.props = { ...(block.props ?? {}), ...props };
         this.dirty = true;
       }
+    },
+
+    updateClasses(id: string, breakpoint: Breakpoint, classes: string[]) {
+      const block = findIn(this.blocks, id);
+      if (!block) {
+        return;
+      }
+      const map = { ...(block.classes ?? {}) };
+      if (classes.length === 0) {
+        delete map[breakpoint];
+      } else {
+        map[breakpoint] = classes;
+      }
+      block.classes = map;
+      this.dirty = true;
     },
   },
 });

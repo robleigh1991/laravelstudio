@@ -127,10 +127,11 @@ Update the status emoji (☐ → 🔄 → ✅) as phases move.
   - [ ] remaining sections: Layout, Spacing, Typography, Appearance, Responsive, Animations, A11y, SEO
 - [ ] Inspector sections: General, Layout, Spacing, Typography, Appearance, Responsive, Animations, A11y, SEO
 - [ ] ⚠️ Curated Tailwind token/class abstraction layer (the model behind every control)
-- [ ] ⚠️ Per-breakpoint switcher (Desktop/Tablet/Mobile): resizes canvas + scopes edits to breakpoint
-- [ ] Mobile-first generation: base utilities at Mobile, `md:`/`lg:` overrides at Tablet/Desktop
-- [ ] Inspector shows overridden-per-breakpoint props + reset-to-inherit
-- [ ] Live preview updates on edit at the selected breakpoint width
+- [x] ⚠️ Per-breakpoint switcher: resizes canvas (Phase 3) **and** scopes class edits to the active breakpoint
+- [x] Mobile-first generation: inspector Classes field writes to `base`/`md`/`lg`; compiler emits `md:`/`lg:` via ClassResolver; `page.updateClasses` + tests
+- [x] Live preview updates on class edit (driven by `page.blocks`)
+- [ ] Inspector: show which props/classes are overridden per breakpoint + reset-to-inherit (polish)
+- [ ] Curated Tailwind token/class controls (sliders/pickers) instead of raw class text (future)
 - [ ] Layers panel (Figma tree): reorder, duplicate, hide, lock
 - [ ] 🧪 Unit tests: ⚠️ per-breakpoint override resolution (base + overrides → correct classes)
 - [ ] 🧪 Component tests: inspector controls write expected Tailwind classes

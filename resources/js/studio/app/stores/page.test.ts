@@ -66,6 +66,22 @@ describe('page store', () => {
     expect(page.selectedId).toBe('b1');
   });
 
+  it('updates classes for a given breakpoint', () => {
+    const page = usePageStore();
+    page.load(pageJson);
+    page.updateClasses('b1', 'md', ['py-20', 'bg-gray-100']);
+    expect(page.findBlock('b1')?.classes?.md).toEqual(['py-20', 'bg-gray-100']);
+    expect(page.dirty).toBe(true);
+  });
+
+  it('removes a breakpoint key when classes are cleared', () => {
+    const page = usePageStore();
+    page.load(pageJson);
+    page.updateClasses('b1', 'md', ['py-20']);
+    page.updateClasses('b1', 'md', []);
+    expect(page.findBlock('b1')?.classes?.md).toBeUndefined();
+  });
+
   it('serializes back to JSON that round-trips', () => {
     const page = usePageStore();
     page.load(pageJson);

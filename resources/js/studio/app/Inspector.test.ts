@@ -3,6 +3,7 @@ import { mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import Inspector from './Inspector.vue';
 import { usePageStore } from './stores/page';
+import { useEditorStore } from './stores/editor';
 
 const pageJson = JSON.stringify({
   blocks: [{ id: 'b1', type: 'hero', props: { headline: 'Hi' } }],
@@ -31,9 +32,8 @@ describe('Inspector', () => {
     page.select('b1');
     await wrapper.vm.$nextTick();
 
-    const inputs = wrapper.findAll('input');
-    expect(inputs).toHaveLength(4); // hero has 4 text fields
-    expect((inputs[0].element as HTMLInputElement).value).toBe('Hi');
+    expect((wrapper.get('[aria-label="Headline"]').element as HTMLInputElement).value).toBe('Hi');
+    expect(wrapper.get('[aria-label="Subheadline"]').exists()).toBe(true);
     expect(wrapper.text()).toContain('hero');
   });
 
@@ -44,9 +44,25 @@ describe('Inspector', () => {
     page.select('b1');
     await wrapper.vm.$nextTick();
 
-    await wrapper.findAll('input')[0].setValue('Updated headline');
+    await wrapper.get('[aria-label="Headline"]').setValue('Updated headline');
 
     expect(page.findBlock('b1')?.props?.headline).toBe('Updated headline');
     expect(page.dirty).toBe(true);
+  });
+
+  it('edits classes scoped to the active breakpoint', async () => {
+    const wrapper = mountInspector();
+    const page = usePageStore();
+    const editor = useEditorStore();
+    page.load(pageJson);
+    page.select('b1');
+    editor.setBreakpoint('md');
+    await wrapper.vm.$nextTick();
+
+    await wrapper.get('[aria-label="Classes"]').setValue('py-20 bg-gray-100');
+
+    expect(page.findBlock('b1')?.classes?.md).toEqual(['py-20', 'bg-gray-100']);
+    // The base breakpoint is untouched.
+    expect(page.findBlock('b1')?.classes?.base).toBeUndefined();
   });
 });
