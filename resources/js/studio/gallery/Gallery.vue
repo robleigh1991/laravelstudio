@@ -122,18 +122,20 @@ function toggleTheme() {
       </StPanel>
 
       <StPanel title="Tree rows — explorer / layers">
-        <StTreeRow
-          label="Pages"
-          :expandable="true"
-          :expanded="pagesExpanded"
-          @toggle="pagesExpanded = !pagesExpanded"
-        />
-        <template v-if="pagesExpanded">
-          <StTreeRow label="home" :depth="1" :active="true" />
-          <StTreeRow label="about" :depth="1" />
-          <StTreeRow label="pricing" :depth="1" />
-        </template>
-        <StTreeRow label="Components" :expandable="true" :expanded="false" />
+        <div role="tree" aria-label="Pages">
+          <StTreeRow
+            label="Pages"
+            :expandable="true"
+            :expanded="pagesExpanded"
+            @toggle="pagesExpanded = !pagesExpanded"
+          />
+          <template v-if="pagesExpanded">
+            <StTreeRow label="home" :depth="1" :active="true" />
+            <StTreeRow label="about" :depth="1" />
+            <StTreeRow label="pricing" :depth="1" />
+          </template>
+          <StTreeRow label="Components" :expandable="true" :expanded="false" />
+        </div>
       </StPanel>
 
       <StPanel title="Modal">

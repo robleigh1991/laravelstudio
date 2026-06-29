@@ -60,11 +60,11 @@ Update the status emoji (☐ → 🔄 → ✅) as phases move.
 - [x] Build Vue component kit (`resources/js/studio/ui/`): Button, TextInput, Segmented, Panel, Select, Slider, Tabs, Tooltip, TreeRow, Toolbar, Modal, ColorPicker, Popover, ContextMenu — **kit complete**
 - [x] Storybook-style gallery of the kit with light/dark toggle → `/studio/gallery` (`resources/js/studio/gallery/`)
 - [x] 🧪 Component unit tests for the built components (Button, TextInput, Segmented)
-- [ ] Interaction & layout spec: panel docking/resize, shortcuts, focus, empty/loading/error states, density
-- [ ] Accessibility baseline pass across the full kit: keyboard nav, focus mgmt, contrast, ARIA
-- [ ] 🧪 axe accessibility checks on the kit gallery in CI
-- [ ] 🧪 Visual-regression baseline snapshots of the kit (light + dark)
-- [ ] ▶️ Verify locally: `npm run lint` · `npm run typecheck` · `npm test`; view kit at `/studio/gallery`
+- [x] Interaction & layout spec → `docs/admin-ui-spec.md` (layout, density, theming, keyboard/focus, ARIA, states, motion, voice)
+- [x] 🧪 axe accessibility checks across the kit (`a11y.test.ts`, WCAG A/AA via `axe-core`) — runs in the test job
+- [x] Fixed tree-role a11y: tree rows wrapped in `role="tree"` in the gallery
+- [ ] 🧪 Visual-regression baseline snapshots of the kit, light + dark (**Part B** — Playwright, own CI job)
+- [ ] ▶️ Verify locally: `npm install` (adds axe-core) · `npm run lint` · `npm run typecheck` · `npm test`
 
 **Exit:** Approved editor mockup + kit gallery. Every later panel is built from this kit. Tests green.
 **Status:** First increment (tokens + 4 core components + gallery + tests) built. More kit components, the interaction/a11y spec, and visual-regression remain before Phase 1 closes.
