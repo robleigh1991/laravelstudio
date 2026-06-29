@@ -91,7 +91,8 @@ Update the status emoji (☐ → 🔄 → ✅) as phases move.
 - [ ] Project model: create/open/list projects (each = real Laravel dir on disk)
 - [ ] 🧪 Feature tests: project create/open, file read/write to disk
 - [ ] 🧪 Component tests: explorer tree, Monaco panel wiring
-- [ ] 🧪 E2E: open project → browse → edit a file in Monaco → save → verify on disk
+- [x] 🧪 E2E smoke (Playwright): open `/studio` → expand dir → open file → Monaco mounts (`e2e/editor.spec.ts`, runs in Visual workflow)
+- [ ] 🧪 E2E: full edit → save → verify on disk (extend the smoke later)
 
 **Exit:** Open a project, browse files, edit any file in Monaco, save to disk. Tests green.
 
