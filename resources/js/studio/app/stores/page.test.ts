@@ -1,6 +1,14 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { setActivePinia, createPinia } from 'pinia';
+
+vi.mock('../api', () => ({
+  saveFile: vi.fn().mockResolvedValue({ saved: true }),
+}));
+
+import { saveFile } from '../api';
 import { usePageStore } from './page';
+
+const mockedSave = vi.mocked(saveFile);
 
 const pageJson = JSON.stringify({
   title: 'Home',
@@ -18,6 +26,7 @@ const pageJson = JSON.stringify({
 describe('page store', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
+    vi.clearAllMocks();
   });
 
   it('loads a page document into editable state', () => {
@@ -62,5 +71,34 @@ describe('page store', () => {
     page.load(pageJson);
     const serialized = page.serialize();
     expect(JSON.parse(serialized)).toEqual(JSON.parse(pageJson));
+  });
+
+  it('saves the serialized page to its path', async () => {
+    const page = usePageStore();
+    page.load(pageJson, 'studio/pages/home.json');
+
+    const ok = await page.save();
+
+    expect(ok).toBe(true);
+    expect(mockedSave).toHaveBeenCalledWith('studio/pages/home.json', page.serialize());
+  });
+
+  it('marks dirty on a prop edit and clears it on save', async () => {
+    const page = usePageStore();
+    page.load(pageJson, 'studio/pages/home.json');
+    expect(page.dirty).toBe(false);
+
+    page.updateProps('b1', { headline: 'X' });
+    expect(page.dirty).toBe(true);
+
+    await page.save();
+    expect(page.dirty).toBe(false);
+  });
+
+  it('does not save when there is no path', async () => {
+    const page = usePageStore();
+    page.load(pageJson); // no path
+    expect(await page.save()).toBe(false);
+    expect(mockedSave).not.toHaveBeenCalled();
   });
 });

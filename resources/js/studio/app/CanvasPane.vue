@@ -6,6 +6,7 @@ import { usePageStore } from './stores/page';
 import PreviewCanvas from './PreviewCanvas.vue';
 import EditorPane from './EditorPane.vue';
 import StSegmented from '../ui/StSegmented.vue';
+import StButton from '../ui/StButton.vue';
 
 const files = useFilesStore();
 const editor = useEditorStore();
@@ -18,7 +19,11 @@ const views = [
 ];
 
 // Keep the page model in sync with the open file.
-watch(() => files.openContents, (contents) => page.load(contents), { immediate: true });
+watch(
+  () => files.openContents,
+  () => page.load(files.openContents, files.openPath),
+  { immediate: true },
+);
 
 const breakpointWidth = computed(() => {
   switch (editor.breakpoint) {
@@ -40,7 +45,12 @@ function onView(value: string) {
   <div class="canvas">
     <div class="canvas__bar">
       <StSegmented :model-value="view" :options="views" aria-label="View" @update:model-value="onView" />
-      <span class="canvas__width">{{ breakpointWidth }} px</span>
+      <div class="canvas__right">
+        <span class="canvas__width">{{ breakpointWidth }} px</span>
+        <StButton v-if="page.isPage" size="sm" variant="primary" @click="page.save()">
+          Save<span v-if="page.dirty"> ●</span>
+        </StButton>
+      </div>
     </div>
     <div class="canvas__body">
       <PreviewCanvas
@@ -73,6 +83,12 @@ function onView(value: string) {
   padding: 0 var(--st-space-3);
   border-bottom: 1px solid var(--st-border);
   background: var(--st-surface-2);
+}
+
+.canvas__right {
+  display: flex;
+  align-items: center;
+  gap: var(--st-space-3);
 }
 
 .canvas__width {

@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import type { Block } from '../../types/block';
 import { parsePage } from '../editor/page';
+import { saveFile } from '../api';
 
 function findIn(blocks: Block[], id: string): Block | undefined {
   for (const block of blocks) {
@@ -29,16 +30,22 @@ export const usePageStore = defineStore('page', {
     blocks: [] as Block[],
     selectedId: null as string | null,
     isPage: false,
+    path: null as string | null,
+    dirty: false,
+    error: null as string | null,
   }),
   actions: {
-    load(contents: string | null): boolean {
+    load(contents: string | null, path: string | null = null): boolean {
       const parsed = parsePage(contents);
+      this.path = path;
+      this.selectedId = null;
+      this.dirty = false;
+
       if (parsed === null) {
         this.title = '';
         this.slug = '';
         this.blocks = [];
         this.isPage = false;
-        this.selectedId = null;
         return false;
       }
 
@@ -46,8 +53,21 @@ export const usePageStore = defineStore('page', {
       this.slug = parsed.slug;
       this.blocks = parsed.blocks as Block[];
       this.isPage = true;
-      this.selectedId = null;
       return true;
+    },
+
+    async save(): Promise<boolean> {
+      if (this.path === null || !this.isPage) {
+        return false;
+      }
+      try {
+        await saveFile(this.path, this.serialize());
+        this.dirty = false;
+        return true;
+      } catch (e) {
+        this.error = e instanceof Error ? e.message : 'Failed to save page.';
+        return false;
+      }
     },
 
     serialize(): string {
@@ -67,6 +87,7 @@ export const usePageStore = defineStore('page', {
       const block = findIn(this.blocks, id);
       if (block) {
         block.props = { ...(block.props ?? {}), ...props };
+        this.dirty = true;
       }
     },
   },
