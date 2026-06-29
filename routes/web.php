@@ -14,4 +14,8 @@ Route::view('/studio/gallery', 'studio.gallery');
 Route::prefix('studio/api')->name('studio.api.')->group(function () {
     Route::get('tree', [FileController::class, 'tree'])->name('tree');
     Route::get('file', [FileController::class, 'show'])->name('file');
+    Route::put('file', [FileController::class, 'store'])->name('file.store');
+    Route::post('file/rename', [FileController::class, 'rename'])->name('file.rename');
+    Route::post('file/duplicate', [FileController::class, 'duplicate'])->name('file.duplicate');
+    Route::delete('file', [FileController::class, 'destroy'])->name('file.destroy');
 });
