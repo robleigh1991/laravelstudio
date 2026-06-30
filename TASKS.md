@@ -15,7 +15,7 @@ Living checklist for the build. Check items off as they land. Each phase carries
 | 2 | Editor shell & explorer | ✅ Core done (shell, Explorer CRUD, Monaco, E2E) | ✅ all green |
 | 3 | Component library & block rendering | ✅ Core: preview + page model + save | ✅ green (more components = breadth) |
 | 4 | Visual editing, inspector & responsive | 🔄 Click-to-select: id annotation | ⏳ run locally |
-| 5 | Drag & drop + theme system | ☐ Not started | — |
+| 5 | Drag & drop + theme system | 🔄 Block mutations (add/remove/move) | ⏳ run locally |
 | 6 | Publish: Blade compilation & Git | ☐ Not started | — |
 | 7 | AI assistant | ☐ Not started | — |
 | 8 | Assets & media library | ☐ Not started | — |
@@ -144,8 +144,9 @@ Update the status emoji (☐ → 🔄 → ✅) as phases move.
 
 ## Phase 5 — Drag & drop + theme system
 
-- [ ] Drag & drop (SortableJS): sections, columns, rows, cards, buttons, nested layouts
-- [ ] Insert from component palette
+- [x] Block mutations in `page` store: `addBlock(type, index)`, `removeBlock(id)`, `moveBlock(from, to)` with id-gen, selection + dirty; tests
+- [ ] Insert from component palette (UI → `addBlock`)
+- [ ] Drag & drop (SortableJS) to reorder → `moveBlock`
 - [ ] Theme system: primary/secondary color, typography, radius, container width, spacing, logo, dark mode (CSS vars / Tailwind tokens)
 - [ ] Responsive container/breakpoint defaults configurable at theme level
 - [ ] 🧪 Unit tests: theme token → CSS variable / class mapping

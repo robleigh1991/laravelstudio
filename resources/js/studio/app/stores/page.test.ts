@@ -117,4 +117,48 @@ describe('page store', () => {
     expect(await page.save()).toBe(false);
     expect(mockedSave).not.toHaveBeenCalled();
   });
+
+  it('adds a block, selects it, and marks dirty', () => {
+    const page = usePageStore();
+    page.load(pageJson);
+    const before = page.blocks.length;
+
+    const id = page.addBlock('cta');
+
+    expect(page.blocks).toHaveLength(before + 1);
+    expect(page.blocks[page.blocks.length - 1].type).toBe('cta');
+    expect(page.selectedId).toBe(id);
+    expect(page.dirty).toBe(true);
+  });
+
+  it('inserts a block at a given index', () => {
+    const page = usePageStore();
+    page.load(pageJson);
+
+    page.addBlock('header', 0);
+
+    expect(page.blocks[0].type).toBe('header');
+  });
+
+  it('removes a block and clears the selection if it was selected', () => {
+    const page = usePageStore();
+    page.load(pageJson);
+    page.select('b1');
+
+    page.removeBlock('b1');
+
+    expect(page.findBlock('b1')).toBeUndefined();
+    expect(page.selectedId).toBeNull();
+  });
+
+  it('reorders blocks with moveBlock', () => {
+    const page = usePageStore();
+    page.load(pageJson);
+    const firstId = page.blocks[0].id;
+
+    page.moveBlock(0, 1);
+
+    expect(page.blocks[1].id).toBe(firstId);
+    expect(page.dirty).toBe(true);
+  });
 });

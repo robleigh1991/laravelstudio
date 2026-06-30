@@ -3,6 +3,14 @@ import type { Block, Breakpoint } from '../../types/block';
 import { parsePage } from '../editor/page';
 import { saveFile } from '../api';
 
+function newBlockId(): string {
+  const rand =
+    typeof crypto !== 'undefined' && 'randomUUID' in crypto
+      ? crypto.randomUUID()
+      : Math.random().toString(36).slice(2, 12);
+  return `blk_${rand}`;
+}
+
 function findIn(blocks: Block[], id: string): Block | undefined {
   for (const block of blocks) {
     if (block.id === id) {
@@ -77,6 +85,41 @@ export const usePageStore = defineStore('page', {
 
     select(id: string | null) {
       this.selectedId = id;
+    },
+
+    addBlock(type: string, index?: number): string {
+      const id = newBlockId();
+      const block: Block = { id, type, props: {}, classes: {} };
+      const at =
+        index === undefined
+          ? this.blocks.length
+          : Math.max(0, Math.min(index, this.blocks.length));
+      this.blocks.splice(at, 0, block);
+      this.selectedId = id;
+      this.dirty = true;
+      return id;
+    },
+
+    removeBlock(id: string) {
+      const index = this.blocks.findIndex((block) => block.id === id);
+      if (index === -1) {
+        return;
+      }
+      this.blocks.splice(index, 1);
+      if (this.selectedId === id) {
+        this.selectedId = null;
+      }
+      this.dirty = true;
+    },
+
+    moveBlock(from: number, to: number) {
+      if (from < 0 || from >= this.blocks.length) {
+        return;
+      }
+      const clampedTo = Math.max(0, Math.min(to, this.blocks.length - 1));
+      const [moved] = this.blocks.splice(from, 1);
+      this.blocks.splice(clampedTo, 0, moved);
+      this.dirty = true;
     },
 
     findBlock(id: string): Block | undefined {
