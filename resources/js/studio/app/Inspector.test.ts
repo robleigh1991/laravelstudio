@@ -33,7 +33,7 @@ describe('Inspector', () => {
     await wrapper.vm.$nextTick();
 
     expect((wrapper.get('[aria-label="Headline"]').element as HTMLInputElement).value).toBe('Hi');
-    expect(wrapper.get('[aria-label="Subheadline"]').exists()).toBe(true);
+    expect(wrapper.find('[aria-label="Subheadline"]').exists()).toBe(true);
     expect(wrapper.text()).toContain('hero');
   });
 
