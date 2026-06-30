@@ -3,6 +3,21 @@ export interface PropField {
   label: string;
 }
 
+export interface ComponentMeta {
+  type: string;
+  label: string;
+}
+
+/** Components offered in the add-block palette, in insert order. */
+export const availableComponents: ComponentMeta[] = [
+  { type: 'header', label: 'Header / nav' },
+  { type: 'hero', label: 'Hero' },
+  { type: 'features', label: 'Features' },
+  { type: 'cta', label: 'Call to action' },
+  { type: 'faq', label: 'FAQ' },
+  { type: 'footer', label: 'Footer' },
+];
+
 /**
  * Editable text props per component type — the seed of the component registry.
  * The inspector renders a field for each, whether or not the block has set it

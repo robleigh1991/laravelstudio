@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { fieldsFor } from './registry';
+import { fieldsFor, availableComponents } from './registry';
 
 describe('fieldsFor', () => {
   it('returns the editable fields for a known component', () => {
@@ -24,5 +24,12 @@ describe('fieldsFor', () => {
 
   it('returns an empty list for an unknown component', () => {
     expect(fieldsFor('mystery')).toEqual([]);
+  });
+
+  it('exposes the available components for the palette', () => {
+    const types = availableComponents.map((c) => c.type);
+    expect(types).toContain('hero');
+    expect(types).toContain('cta');
+    expect(types).toContain('faq');
   });
 });

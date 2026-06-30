@@ -5,6 +5,7 @@ import { useEditorStore } from './stores/editor';
 import { usePageStore } from './stores/page';
 import PreviewCanvas from './PreviewCanvas.vue';
 import EditorPane from './EditorPane.vue';
+import BlockPalette from './BlockPalette.vue';
 import StSegmented from '../ui/StSegmented.vue';
 import StButton from '../ui/StButton.vue';
 
@@ -47,6 +48,7 @@ function onView(value: string) {
       <StSegmented :model-value="view" :options="views" aria-label="View" @update:model-value="onView" />
       <div class="canvas__right">
         <span class="canvas__width">{{ breakpointWidth }} px</span>
+        <BlockPalette v-if="page.isPage" />
         <StButton v-if="page.isPage" size="sm" variant="primary" @click="page.save()">
           Save<span v-if="page.dirty"> ●</span>
         </StButton>
